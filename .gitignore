@@ -39,3 +39,15 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+
+# project specific
+tsconfig.json
+.claude/
+.eslintrc.js
+.githooks/
+.gitignore
+.opencode/
+CLAUDE.md
+
+
