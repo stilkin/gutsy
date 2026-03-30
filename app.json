@@ -33,7 +33,14 @@
       "expo-sqlite",
       "expo-secure-store",
       "@react-native-community/datetimepicker",
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Food Diary needs access to your photo library so you can attach a photo to a food entry.",
+          "cameraPermission": "Food Diary needs your camera to take a photo of your meal."
+        }
+      ]
     ]
   }
 }

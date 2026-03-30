@@ -1,13 +1,16 @@
+import { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   View,
   Text,
   Switch,
+  TextInput,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import { useAppStore } from '@/store';
+import { loadApiKey, saveApiKey, clearApiKey } from '@/settings/apiKey';
 import type { Settings } from '@/types';
 
 // ── Stepper sub-component ─────────────────────────────────────────────────────
@@ -52,9 +55,30 @@ function Stepper({ label, value, unit, min, max, onChange }: StepperProps) {
 
 export default function SettingsScreen() {
   const { settings, updateSetting } = useAppStore();
+  const [apiKey, setApiKey] = useState('');
+  const [apiKeySaved, setApiKeySaved] = useState(false);
+
+  useEffect(() => {
+    loadApiKey().then((key) => {
+      if (key) {
+        setApiKey(key);
+        setApiKeySaved(true);
+      }
+    });
+  }, []);
 
   function update<K extends keyof Settings>(key: K, value: Settings[K]) {
     updateSetting(key, value);
+  }
+
+  async function handleApiKeySave() {
+    const trimmed = apiKey.trim();
+    if (trimmed) {
+      await saveApiKey(trimmed);
+    } else {
+      await clearApiKey();
+    }
+    setApiKeySaved(!!trimmed);
   }
 
   return (
@@ -100,6 +124,31 @@ export default function SettingsScreen() {
             />
           </View>
         )}
+
+        <Text style={styles.sectionHeader}>AI Assistant</Text>
+
+        <View style={styles.apiKeyField}>
+          <Text style={styles.rowLabel}>OpenRouter API Key</Text>
+          <TextInput
+            style={styles.apiKeyInput}
+            value={apiKey}
+            onChangeText={(v) => {
+              setApiKey(v);
+              setApiKeySaved(false);
+            }}
+            secureTextEntry
+            placeholder="sk-or-…"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={[styles.apiKeySaveBtn, apiKeySaved && styles.apiKeySaveBtnSaved]}
+            onPress={handleApiKeySave}
+            disabled={apiKeySaved}
+          >
+            <Text style={styles.apiKeySaveBtnText}>{apiKeySaved ? 'Saved' : 'Save'}</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -154,4 +203,31 @@ const styles = StyleSheet.create({
   stepBtnText: { fontSize: 20, color: '#007AFF', lineHeight: 22 },
   stepBtnDisabled: { color: '#ccc' },
   stepValue: { fontSize: 17, minWidth: 50, textAlign: 'center' },
+  apiKeyField: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#e0e0e0',
+  },
+  apiKeyInput: {
+    fontSize: 15,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 8,
+    color: '#000',
+  },
+  apiKeySaveBtn: {
+    marginTop: 8,
+    alignSelf: 'flex-end',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+  },
+  apiKeySaveBtnSaved: {
+    backgroundColor: '#34c759',
+  },
+  apiKeySaveBtnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
 });

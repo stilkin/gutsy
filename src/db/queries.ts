@@ -32,3 +32,14 @@ export async function getEventsByDate(dateStr: string): Promise<DiaryEvent[]> {
 export async function deleteEvent(id: number): Promise<void> {
   await db.runAsync(`DELETE FROM events WHERE id = ?`, [id]);
 }
+
+export async function insertImage(
+  eventId: number,
+  filePath: string,
+  aiDescription: string | null
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO images (event_id, file_path, ai_description, created_at) VALUES (?, ?, ?, ?)`,
+    [eventId, filePath, aiDescription ?? null, Date.now()]
+  );
+}
