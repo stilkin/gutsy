@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   View,
   Text,
   TouchableOpacity,
@@ -56,6 +57,7 @@ export default function ExportScreen() {
         <View style={styles.headerSpacer} />
       </View>
 
+      <ScrollView>
       <View style={styles.field}>
         <Text style={styles.label}>Start date</Text>
         <TouchableOpacity onPress={() => setShowStartPicker(true)}>
@@ -106,6 +108,7 @@ export default function ExportScreen() {
           <Text style={styles.exportBtnText}>Export PDF</Text>
         )}
       </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 }

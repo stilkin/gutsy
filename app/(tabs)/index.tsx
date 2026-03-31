@@ -114,6 +114,12 @@ function EventRow({ event, onDelete }: EventRowProps) {
             {event.notes}
           </Text>
         ) : null}
+        {event.severity != null && (
+          <Text style={styles.rowMeta}>Severity {event.severity}/5</Text>
+        )}
+        {event.bristol_type != null && (
+          <Text style={styles.rowMeta}>Bristol type {event.bristol_type}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -242,10 +248,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#e0e0e0',
   },
   rowIcon: { fontSize: 22, marginRight: 12 },
   rowContent: { flex: 1 },
   rowTime: { fontSize: 15, fontWeight: '500' },
   rowNotes: { fontSize: 13, color: '#888', marginTop: 2 },
+  rowMeta: { fontSize: 12, color: '#aaa', marginTop: 2 },
 });
