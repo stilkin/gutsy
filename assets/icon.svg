@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="200" fill="#2D6A4F"/>
+
+  <!-- Fork (centered at x=337, spans y=258–762) -->
+  <!-- Three tines -->
+  <rect x="276" y="258" width="22" height="175" rx="11" fill="white"/>
+  <rect x="326" y="258" width="22" height="175" rx="11" fill="white"/>
+  <rect x="376" y="258" width="22" height="175" rx="11" fill="white"/>
+  <!-- Shoulder: merges tines into handle -->
+  <rect x="276" y="404" width="122" height="82" rx="10" fill="white"/>
+  <!-- Handle -->
+  <rect x="326" y="466" width="22" height="296" rx="11" fill="white"/>
+
+  <!-- Heart (centered at x=637, y=512) -->
+  <!-- Path: two semicircle bumps on top, quadratic V on bottom -->
+  <path
+    transform="translate(497,372) scale(2.8)"
+    d="M 10,30 A 20,20,0,0,1,50,30 A 20,20,0,0,1,90,30 Q 90,60,50,90 Q 10,60,10,30 z"
+    fill="white"
+  />
+</svg>

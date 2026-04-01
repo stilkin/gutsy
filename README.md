@@ -23,7 +23,20 @@ Simple, maintainable, elegant. Less code means less to break and less to maintai
 
 Expo (React Native) · Expo Router · SQLite · Zustand · dayjs · OpenRouter API (optional, for AI photo description)
 
-## Development plan
+## Getting started
+
+**Prerequisites:** Node.js, and either the [Expo Go](https://expo.dev/go) app on your phone or a simulator/emulator.
+
+```sh
+npm install
+npm start        # opens Expo dev server — scan QR code with Expo Go
+npm run ios      # iOS simulator
+npm run android  # Android emulator
+```
+
+## What's built
+
+All four planned phases are complete:
 
 | Phase | Change | Description |
 |---|---|---|
