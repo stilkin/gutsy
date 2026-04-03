@@ -1,4 +1,5 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/colors';
 
 interface FABProps {
@@ -8,7 +9,7 @@ interface FABProps {
 export function FAB({ onPress }: FABProps) {
   return (
     <TouchableOpacity style={styles.fab} onPress={onPress} activeOpacity={0.8}>
-      <Text style={styles.icon}>+</Text>
+      <Ionicons name="add" size={34} color={colors.white} />
     </TouchableOpacity>
   );
 }
@@ -29,11 +30,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-  },
-  icon: {
-    color: colors.white,
-    fontSize: 28,
-    lineHeight: 30,
-    fontWeight: '300',
   },
 });

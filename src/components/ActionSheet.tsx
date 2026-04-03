@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '@/store';
 import { colors } from '@/colors';
 import type { EventType } from '@/types';
@@ -17,12 +18,12 @@ interface ActionSheetProps {
 }
 
 const BASE_OPTIONS = [
-  { label: 'Food', key: 'food' as const },
-  { label: 'Ache', key: 'ache' as const },
-  { label: 'Medication', key: 'medication' as const },
+  { label: 'Food', key: 'food' as const, icon: 'restaurant-outline' as const },
+  { label: 'Ache', key: 'ache' as const, icon: 'flash-outline' as const },
+  { label: 'Medication', key: 'medication' as const, icon: 'medical-outline' as const },
 ];
 
-const TOILET_OPTION = { label: 'Toilet break', key: 'toilet' as const };
+const TOILET_OPTION = { label: 'Toilet break', key: 'toilet' as const, icon: 'water-outline' as const };
 
 export function ActionSheet({ visible, onClose, onSelect }: ActionSheetProps) {
   const toiletEnabled = useAppStore((s) => s.settings.toiletTrackingEnabled);
@@ -49,6 +50,7 @@ export function ActionSheet({ visible, onClose, onSelect }: ActionSheetProps) {
               onClose();
             }}
           >
+            <Ionicons name={opt.icon} size={22} color={colors.primary} style={styles.optionIcon} />
             <Text style={styles.optionText}>{opt.label}</Text>
           </TouchableOpacity>
         ))}
@@ -69,10 +71,15 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   option: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 18,
     paddingHorizontal: 24,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.divider,
+  },
+  optionIcon: {
+    marginRight: 14,
   },
   optionText: {
     fontSize: 17,
