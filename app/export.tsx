@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 import { getEventsByDateRange } from '@/db/queries';
 import { prepareImages } from '@/export/prepareImages';
 import { buildHtml } from '@/export/template';
+import { colors } from '@/colors';
 
 export default function ExportScreen() {
   const [startDate, setStartDate] = useState(
@@ -103,7 +104,7 @@ export default function ExportScreen() {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.white} />
         ) : (
           <Text style={styles.exportBtnText}>Export PDF</Text>
         )}
@@ -114,7 +115,7 @@ export default function ExportScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: colors.background },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -122,23 +123,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   title: { fontSize: 17, fontWeight: '600' },
-  cancel: { fontSize: 17, color: '#007AFF' },
+  cancel: { fontSize: 17, color: colors.primary },
   headerSpacer: { width: 60 },
   field: { paddingHorizontal: 16, paddingVertical: 12 },
-  label: { fontSize: 13, color: '#888', marginBottom: 6 },
-  dateValue: { fontSize: 17, color: '#007AFF' },
+  label: { fontSize: 13, color: colors.secondaryText, marginBottom: 6 },
+  dateValue: { fontSize: 17, color: colors.primary },
   exportBtn: {
     marginHorizontal: 16,
     marginTop: 32,
     height: 50,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   exportBtnDisabled: { opacity: 0.5 },
-  exportBtnText: { color: '#fff', fontSize: 17, fontWeight: '600' },
+  exportBtnText: { color: colors.white, fontSize: 17, fontWeight: '600' },
 });

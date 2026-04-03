@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { colors } from '@/colors';
 
 interface FABProps {
   onPress: () => void;
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   icon: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 28,
     lineHeight: 30,
     fontWeight: '300',

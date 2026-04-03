@@ -12,7 +12,7 @@ import {
 import { router } from 'expo-router';
 import { useAppStore } from '@/store';
 import { loadApiKey, saveApiKey, clearApiKey } from '@/settings/apiKey';
-import type { Settings } from '@/types';
+import { colors } from '@/colors';
 
 // ── Stepper sub-component ─────────────────────────────────────────────────────
 
@@ -68,10 +68,6 @@ export default function SettingsScreen() {
     });
   }, []);
 
-  function update<K extends keyof Settings>(key: K, value: Settings[K]) {
-    updateSetting(key, value);
-  }
-
   async function handleApiKeySave() {
     const trimmed = apiKey.trim();
     if (trimmed) {
@@ -95,7 +91,7 @@ export default function SettingsScreen() {
           unit="h"
           min={1}
           max={24}
-          onChange={(v) => update('windowHours', v)}
+          onChange={(v) => updateSetting('windowHours', v)}
         />
         <Text style={styles.sectionHeader}>Logging</Text>
 
@@ -103,7 +99,7 @@ export default function SettingsScreen() {
           <Text style={styles.rowLabel}>Toilet tracking</Text>
           <Switch
             value={settings.toiletTrackingEnabled}
-            onValueChange={(v) => update('toiletTrackingEnabled', v)}
+            onValueChange={(v) => updateSetting('toiletTrackingEnabled', v)}
           />
         </View>
 
@@ -112,7 +108,7 @@ export default function SettingsScreen() {
             <Text style={styles.rowLabel}>Bristol scale</Text>
             <Switch
               value={settings.bristolScaleEnabled}
-              onValueChange={(v) => update('bristolScaleEnabled', v)}
+              onValueChange={(v) => updateSetting('bristolScaleEnabled', v)}
             />
           </View>
         )}
@@ -155,7 +151,7 @@ export default function SettingsScreen() {
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: colors.background },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -166,7 +162,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#888',
+    color: colors.secondaryText,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     paddingHorizontal: 16,
@@ -180,8 +176,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
-    backgroundColor: '#fff',
+    borderBottomColor: colors.divider,
+    backgroundColor: colors.background,
   },
   rowLabel: { fontSize: 17 },
   stepper: {
@@ -194,23 +190,23 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#007AFF',
+    borderColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  stepBtnText: { fontSize: 20, color: '#007AFF', lineHeight: 22 },
-  stepBtnDisabled: { color: '#ccc' },
+  stepBtnText: { fontSize: 20, color: colors.primary, lineHeight: 22 },
+  stepBtnDisabled: { color: colors.disabled },
   stepValue: { fontSize: 17, minWidth: 50, textAlign: 'center' },
   apiKeyField: {
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   apiKeyInput: {
     fontSize: 15,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#e0e0e0',
+    borderColor: colors.divider,
     borderRadius: 8,
     padding: 10,
     marginTop: 8,
@@ -221,12 +217,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingHorizontal: 20,
     paddingVertical: 8,
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.primary,
     borderRadius: 8,
   },
   apiKeySaveBtnSaved: {
-    backgroundColor: '#34c759',
+    backgroundColor: colors.success,
   },
-  apiKeySaveBtnText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  apiKeySaveBtnText: { color: colors.white, fontSize: 15, fontWeight: '600' },
   chevron: { fontSize: 22, color: '#c7c7cc' },
 });

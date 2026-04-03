@@ -10,23 +10,23 @@ import {
   ActivityIndicator,
   Alert,
   Modal,
-  Platform,
   StyleSheet,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import dayjs from 'dayjs';
 import { insertEvent, insertImage } from '@/db/queries';
 import { resizeForStorage } from '@/images/processImage';
 import { describeImage } from '@/ai/describeImage';
 import { loadApiKey } from '@/settings/apiKey';
 import { useAppStore } from '@/store';
+import { colors } from '@/colors';
+import { entryFormStyles } from '@/components/entryFormStyles';
+import { EntryFormHeader } from '@/components/EntryFormHeader';
+import { TimePickerField } from '@/components/TimePickerField';
 
 export default function FoodEntryScreen() {
   const [timestamp, setTimestamp] = useState(new Date());
   const [notes, setNotes] = useState('');
-  const [showPicker, setShowPicker] = useState(false);
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
@@ -103,7 +103,7 @@ export default function FoodEntryScreen() {
       }
     }
 
-    const saved = {
+    addEvent({
       id,
       type: 'food' as const,
       timestamp: timestamp.getTime(),
@@ -112,46 +112,18 @@ export default function FoodEntryScreen() {
       bristol_type: null,
       name: null,
       created_at: Date.now(),
-    };
-    addEvent(saved);
+    });
     router.back();
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* ── Header ── */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.cancel}>Cancel</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Food</Text>
-        <TouchableOpacity onPress={handleSave} disabled={aiLoading}>
-          <Text style={[styles.save, aiLoading && styles.saveDisabled]}>Save</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={entryFormStyles.container}>
+      <EntryFormHeader title="Food" onSave={handleSave} saveDisabled={aiLoading} />
+      <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
-      {/* ── Time field ── */}
-      <View style={styles.field}>
-        <Text style={styles.label}>Time</Text>
-        <TouchableOpacity onPress={() => setShowPicker(true)}>
-          <Text style={styles.timeValue}>{dayjs(timestamp).format('HH:mm')}</Text>
-        </TouchableOpacity>
-        {(showPicker || Platform.OS === 'ios') && (
-          <DateTimePicker
-            value={timestamp}
-            mode="time"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(_, date) => {
-              setShowPicker(false);
-              if (date) setTimestamp(date);
-            }}
-          />
-        )}
-      </View>
-
-      {/* ── Photo field ── */}
-      <View style={styles.field}>
-        <Text style={styles.label}>Photo</Text>
+      {/* Photo field */}
+      <View style={entryFormStyles.field}>
+        <Text style={entryFormStyles.label}>Photo</Text>
         {photoUri ? (
           <View style={styles.previewContainer}>
             <Image source={{ uri: photoUri }} style={styles.preview} />
@@ -172,17 +144,17 @@ export default function FoodEntryScreen() {
         )}
       </View>
 
-      {/* ── Notes field ── */}
-      <View style={styles.field}>
-        <Text style={styles.label}>Notes</Text>
+      {/* Notes field */}
+      <View style={entryFormStyles.field}>
+        <Text style={entryFormStyles.label}>Notes</Text>
         {aiLoading && (
           <View style={styles.aiLoadingRow}>
-            <ActivityIndicator size="small" color="#007AFF" />
+            <ActivityIndicator size="small" color={colors.primary} />
             <Text style={styles.aiLoadingText}>Getting AI description…</Text>
           </View>
         )}
         <TextInput
-          style={[styles.textInput, aiLoading && styles.textInputDisabled]}
+          style={[entryFormStyles.textInput, aiLoading && styles.textInputDisabled]}
           multiline
           placeholder="Optional notes…"
           value={notes}
@@ -192,7 +164,7 @@ export default function FoodEntryScreen() {
         {aiError ? <Text style={styles.aiErrorText}>{aiError}</Text> : null}
       </View>
 
-      {/* ── Photo source sheet ── */}
+      {/* Photo source sheet */}
       <Modal
         visible={showPhotoSheet}
         transparent
@@ -234,43 +206,16 @@ export default function FoodEntryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
-  },
-  title: { fontSize: 17, fontWeight: '600' },
-  cancel: { fontSize: 17, color: '#007AFF' },
-  save: { fontSize: 17, color: '#007AFF', fontWeight: '600' },
-  saveDisabled: { opacity: 0.4 },
-  field: { paddingHorizontal: 16, paddingVertical: 12 },
-  label: { fontSize: 13, color: '#888', marginBottom: 6 },
-  timeValue: { fontSize: 17, color: '#007AFF' },
-  textInput: {
-    fontSize: 17,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 10,
-    minHeight: 80,
-    textAlignVertical: 'top',
-  },
   textInputDisabled: { opacity: 0.5 },
-  // Photo
   photoBtn: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#007AFF',
+    borderColor: colors.primary,
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 16,
     alignSelf: 'flex-start',
   },
-  photoBtnText: { color: '#007AFF', fontSize: 15 },
+  photoBtnText: { color: colors.primary, fontSize: 15 },
   previewContainer: { position: 'relative', alignSelf: 'flex-start' },
   preview: { width: 120, height: 120, borderRadius: 8 },
   removeBtn: {
@@ -280,24 +225,22 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#ff3b30',
+    backgroundColor: colors.danger,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  removeBtnText: { color: '#fff', fontSize: 12, fontWeight: '700' },
-  // AI loading / error
+  removeBtnText: { color: colors.white, fontSize: 12, fontWeight: '700' },
   aiLoadingRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginBottom: 6,
   },
-  aiLoadingText: { fontSize: 13, color: '#888' },
-  aiErrorText: { fontSize: 12, color: '#ff3b30', marginTop: 4 },
-  // Photo source sheet
+  aiLoadingText: { fontSize: 13, color: colors.secondaryText },
+  aiErrorText: { fontSize: 12, color: colors.danger, marginTop: 4 },
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
   sheet: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingBottom: 32,
@@ -306,9 +249,9 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 24,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   sheetOptionText: { fontSize: 17 },
   sheetCancel: { borderBottomWidth: 0 },
-  sheetCancelText: { color: '#ff3b30' },
+  sheetCancelText: { color: colors.danger },
 });

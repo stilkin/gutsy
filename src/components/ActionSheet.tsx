@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useAppStore } from '@/store';
+import { colors } from '@/colors';
 import type { EventType } from '@/types';
 
 interface ActionSheetProps {
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   sheet: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingBottom: 32,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 24,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   optionText: {
     fontSize: 17,

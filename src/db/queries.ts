@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import * as FileSystem from 'expo-file-system';
 import { db } from './database';
 import type { DiaryEvent, DiaryEventWithImage } from '@/types';
 
@@ -32,6 +33,21 @@ export async function getEventsByDate(dateStr: string): Promise<DiaryEvent[]> {
 
 export async function deleteEvent(id: number): Promise<void> {
   await db.runAsync(`DELETE FROM events WHERE id = ?`, [id]);
+}
+
+export async function deleteEventWithImages(id: number): Promise<void> {
+  const images = await db.getAllAsync<{ file_path: string }>(
+    'SELECT file_path FROM images WHERE event_id = ?',
+    [id]
+  );
+  await deleteEvent(id);
+  for (const img of images) {
+    try {
+      await FileSystem.deleteAsync(img.file_path, { idempotent: true });
+    } catch {
+      // Ignore missing files
+    }
+  }
 }
 
 export async function getEventsByDateRange(

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { getEventsByDate } from '@/db/queries';
-import { loadSettings as loadFromDisk, saveSetting } from '@/settings';
+import { loadSettings as loadFromDisk, saveSetting, DEFAULT_SETTINGS } from '@/settings';
 import type { DiaryEvent, Settings } from '@/types';
 import dayjs from 'dayjs';
 
@@ -28,14 +28,6 @@ interface SettingsSlice {
 }
 
 type AppStore = UIState & EventsSlice & SettingsSlice;
-
-// ── Defaults ──────────────────────────────────────────────────────────────────
-
-const DEFAULT_SETTINGS: Settings = {
-  windowHours: 8,
-  toiletTrackingEnabled: true,
-  bristolScaleEnabled: false,
-};
 
 // ── Store ─────────────────────────────────────────────────────────────────────
 

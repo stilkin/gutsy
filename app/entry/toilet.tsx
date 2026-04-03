@@ -1,24 +1,18 @@
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-  StyleSheet,
-} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import dayjs from 'dayjs';
 import { insertEvent } from '@/db/queries';
 import { useAppStore } from '@/store';
+import { colors } from '@/colors';
+import { entryFormStyles } from '@/components/entryFormStyles';
+import { EntryFormHeader } from '@/components/EntryFormHeader';
+import { TimePickerField } from '@/components/TimePickerField';
 
 export default function ToiletEntryScreen() {
   const [timestamp, setTimestamp] = useState(new Date());
   const [notes, setNotes] = useState('');
   const [bristolType, setBristolType] = useState<number | null>(null);
-  const [showPicker, setShowPicker] = useState(false);
 
   const addEvent = useAppStore((s) => s.addEvent);
   const bristolEnabled = useAppStore((s) => s.settings.bristolScaleEnabled);
@@ -45,39 +39,14 @@ export default function ToiletEntryScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.cancel}>Cancel</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Toilet break</Text>
-        <TouchableOpacity onPress={handleSave}>
-          <Text style={styles.save}>Save</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={entryFormStyles.container}>
+      <EntryFormHeader title="Toilet break" onSave={handleSave} />
+      <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
-      <View style={styles.field}>
-        <Text style={styles.label}>Time</Text>
-        <TouchableOpacity onPress={() => setShowPicker(true)}>
-          <Text style={styles.timeValue}>{dayjs(timestamp).format('HH:mm')}</Text>
-        </TouchableOpacity>
-        {(showPicker || Platform.OS === 'ios') && (
-          <DateTimePicker
-            value={timestamp}
-            mode="time"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(_, date) => {
-              setShowPicker(false);
-              if (date) setTimestamp(date);
-            }}
-          />
-        )}
-      </View>
-
-      <View style={styles.field}>
-        <Text style={styles.label}>Notes</Text>
+      <View style={entryFormStyles.field}>
+        <Text style={entryFormStyles.label}>Notes</Text>
         <TextInput
-          style={styles.textInput}
+          style={entryFormStyles.textInput}
           multiline
           placeholder="Optional notes…"
           value={notes}
@@ -86,8 +55,8 @@ export default function ToiletEntryScreen() {
       </View>
 
       {bristolEnabled && (
-        <View style={styles.field}>
-          <Text style={styles.label}>Bristol type (optional)</Text>
+        <View style={entryFormStyles.field}>
+          <Text style={entryFormStyles.label}>Bristol type (optional)</Text>
           <View style={styles.bristolRow}>
             {[1, 2, 3, 4, 5, 6, 7].map((n) => (
               <TouchableOpacity
@@ -108,42 +77,17 @@ export default function ToiletEntryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
-  },
-  title: { fontSize: 17, fontWeight: '600' },
-  cancel: { fontSize: 17, color: '#007AFF' },
-  save: { fontSize: 17, color: '#007AFF', fontWeight: '600' },
-  field: { paddingHorizontal: 16, paddingVertical: 12 },
-  label: { fontSize: 13, color: '#888', marginBottom: 6 },
-  timeValue: { fontSize: 17, color: '#007AFF' },
-  textInput: {
-    fontSize: 17,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 10,
-    minHeight: 80,
-    textAlignVertical: 'top',
-  },
   bristolRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   circle: {
     width: 44,
     height: 44,
     borderRadius: 22,
     borderWidth: 1.5,
-    borderColor: '#007AFF',
+    borderColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  circleSelected: { backgroundColor: '#007AFF' },
-  circleText: { fontSize: 16, color: '#007AFF' },
-  circleTextSelected: { color: '#fff' },
+  circleSelected: { backgroundColor: colors.primary },
+  circleText: { fontSize: 16, color: colors.primary },
+  circleTextSelected: { color: colors.white },
 });

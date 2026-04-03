@@ -11,12 +11,11 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
 import dayjs from 'dayjs';
-import { deleteEvent } from '@/db/queries';
-import { db } from '@/db/database';
-import * as FileSystem from 'expo-file-system';
+import { deleteEventWithImages } from '@/db/queries';
 import { useAppStore } from '@/store';
 import { FAB } from '@/components/FAB';
 import { ActionSheet } from '@/components/ActionSheet';
+import { colors } from '@/colors';
 import type { DiaryEvent, EventType } from '@/types';
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -151,20 +150,8 @@ export default function TimelineScreen() {
   }, [selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleDelete(event: DiaryEvent) {
-    // Fetch image paths before the cascade delete removes them
-    const images = await db.getAllAsync<{ file_path: string }>(
-      'SELECT file_path FROM images WHERE event_id = ?',
-      [event.id]
-    );
-    await deleteEvent(event.id);
+    await deleteEventWithImages(event.id);
     removeEvent(event.id);
-    for (const img of images) {
-      try {
-        await FileSystem.deleteAsync(img.file_path, { idempotent: true });
-      } catch {
-        // Ignore missing files
-      }
-    }
   }
 
   function handleSelect(key: EventType) {
@@ -211,7 +198,7 @@ export default function TimelineScreen() {
 // ── Styles ────────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: colors.background },
 
   // Date header
   dateHeader: {
@@ -220,11 +207,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   arrowBtn: { padding: 8 },
-  arrow: { fontSize: 28, color: '#007AFF', lineHeight: 32 },
-  arrowDisabled: { color: '#ccc' },
+  arrow: { fontSize: 28, color: colors.primary, lineHeight: 32 },
+  arrowDisabled: { color: colors.disabled },
   dateLabelBtn: { flex: 1, alignItems: 'center' },
   dateLabel: { fontSize: 17, fontWeight: '600' },
 
@@ -242,7 +229,7 @@ const styles = StyleSheet.create({
   listContent: { flexGrow: 1, paddingBottom: 100 },
   empty: {
     textAlign: 'center',
-    color: '#aaa',
+    color: colors.tertiaryText,
     marginTop: 60,
     fontSize: 16,
   },
@@ -254,12 +241,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.divider,
   },
   rowIcon: { fontSize: 22, marginRight: 12 },
   rowContent: { flex: 1 },
   rowTime: { fontSize: 15, fontWeight: '500' },
   rowPrimaryLabel: { fontSize: 15, fontWeight: '500', marginTop: 2 },
-  rowNotes: { fontSize: 13, color: '#888', marginTop: 2 },
-  rowMeta: { fontSize: 12, color: '#aaa', marginTop: 2 },
+  rowNotes: { fontSize: 13, color: colors.secondaryText, marginTop: 2 },
+  rowMeta: { fontSize: 12, color: colors.tertiaryText, marginTop: 2 },
 });
