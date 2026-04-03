@@ -8,6 +8,7 @@ export interface DiaryEvent {
   severity: number | null;       // 1–5, ache only
   bristol_type: number | null;   // 1–7, toilet only
   name: string | null;           // medication name, medication only
+  breaks_fast: number;           // 1 = breaks fast (default), 0 = fasting-safe; food only
   created_at: number;
 }
 

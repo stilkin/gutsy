@@ -67,9 +67,9 @@ interface FastingWindowBannerProps {
 }
 
 function FastingWindowBanner({ events, windowHours }: FastingWindowBannerProps) {
-  const foodEvents = events.filter((e) => e.type === 'food');
-  if (foodEvents.length === 0) return null;
-  const windowStart = Math.min(...foodEvents.map((e) => e.timestamp));
+  const fastBreakingEvents = events.filter((e) => e.type === 'food' && e.breaks_fast !== 0);
+  if (fastBreakingEvents.length === 0) return null;
+  const windowStart = Math.min(...fastBreakingEvents.map((e) => e.timestamp));
   const windowEnd = windowStart + windowHours * 3_600_000;
   return (
     <View style={styles.banner}>
@@ -124,6 +124,9 @@ function EventRow({ event, onDelete }: EventRowProps) {
         )}
         {event.bristol_type != null && (
           <Text style={styles.rowMeta}>Bristol type {event.bristol_type}</Text>
+        )}
+        {event.type === 'food' && event.breaks_fast === 0 && (
+          <Text style={styles.rowMeta}>fasting-safe</Text>
         )}
       </View>
     </TouchableOpacity>

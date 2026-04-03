@@ -69,6 +69,7 @@ export default function MedicationEntryScreen() {
       severity: null,
       bristol_type: null,
       name: normalised,
+      breaks_fast: 1,
       created_at: Date.now(),
     });
     router.back();

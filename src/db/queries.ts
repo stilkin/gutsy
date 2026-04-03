@@ -4,11 +4,11 @@ import { db } from './database';
 import type { DiaryEvent, DiaryEventWithImage } from '@/types';
 
 export async function insertEvent(
-  event: Omit<DiaryEvent, 'id' | 'created_at' | 'name'> & { name?: string | null }
+  event: Omit<DiaryEvent, 'id' | 'created_at' | 'name'> & { name?: string | null; breaks_fast?: number }
 ): Promise<number> {
   const result = await db.runAsync(
-    `INSERT INTO events (type, timestamp, notes, severity, bristol_type, name, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO events (type, timestamp, notes, severity, bristol_type, name, breaks_fast, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       event.type,
       event.timestamp,
@@ -16,6 +16,7 @@ export async function insertEvent(
       event.severity ?? null,
       event.bristol_type ?? null,
       event.name ?? null,
+      event.breaks_fast ?? 1,
       Date.now(),
     ]
   );

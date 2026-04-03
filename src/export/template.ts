@@ -39,6 +39,7 @@ export function buildHtml(
         body += `<div class="event">`;
         body += `<div class="time">${time}</div>`;
         body += `<div class="type">${type}</div>`;
+        if (e.type === 'food' && e.breaks_fast === 0) body += `<div class="detail">Fasting-safe</div>`;
         if (e.type === 'medication' && e.name) body += `<div class="primary-label">${esc(e.name)}</div>`;
         if (e.notes) body += `<div class="notes">${esc(e.notes)}</div>`;
         if (e.severity != null) body += `<div class="detail">Severity: ${e.severity}/5</div>`;

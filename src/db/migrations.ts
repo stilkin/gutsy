@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from './database';
 
-const CURRENT_SCHEMA_VERSION = 2;
+const CURRENT_SCHEMA_VERSION = 3;
 
 export async function runMigrations(): Promise<void> {
   await db.execAsync(`
@@ -34,6 +34,15 @@ export async function runMigrations(): Promise<void> {
     // Migration v1 → v2: add name column for medication entries
     try {
       await db.execAsync(`ALTER TABLE events ADD COLUMN name TEXT`);
+    } catch {
+      // Column may already exist if table was just created above — safe to ignore
+    }
+  }
+
+  if (version < 3) {
+    // Migration v2 → v3: add breaks_fast flag for fasting-exempt food entries
+    try {
+      await db.execAsync(`ALTER TABLE events ADD COLUMN breaks_fast INTEGER NOT NULL DEFAULT 1`);
     } catch {
       // Column may already exist if table was just created above — safe to ignore
     }

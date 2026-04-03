@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Alert,
   Modal,
+  Switch,
   StyleSheet,
 } from 'react-native';
 import { router } from 'expo-router';
@@ -27,6 +28,7 @@ import { TimePickerField } from '@/components/TimePickerField';
 export default function FoodEntryScreen() {
   const [timestamp, setTimestamp] = useState(new Date());
   const [notes, setNotes] = useState('');
+  const [breaksFast, setBreaksFast] = useState(true);
 
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [showPhotoSheet, setShowPhotoSheet] = useState(false);
@@ -92,6 +94,7 @@ export default function FoodEntryScreen() {
       notes: notes.trim() || null,
       severity: null,
       bristol_type: null,
+      breaks_fast: breaksFast ? 1 : 0,
     });
 
     if (photoUri) {
@@ -111,6 +114,7 @@ export default function FoodEntryScreen() {
       severity: null,
       bristol_type: null,
       name: null,
+      breaks_fast: breaksFast ? 1 : 0,
       created_at: Date.now(),
     });
     router.back();
@@ -164,6 +168,12 @@ export default function FoodEntryScreen() {
         {aiError ? <Text style={styles.aiErrorText}>{aiError}</Text> : null}
       </View>
 
+      {/* Breaks fast toggle */}
+      <View style={[entryFormStyles.field, styles.switchRow]}>
+        <Text style={entryFormStyles.label}>Breaks fast</Text>
+        <Switch value={breaksFast} onValueChange={setBreaksFast} />
+      </View>
+
       {/* Photo source sheet */}
       <Modal
         visible={showPhotoSheet}
@@ -206,6 +216,7 @@ export default function FoodEntryScreen() {
 }
 
 const styles = StyleSheet.create({
+  switchRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   textInputDisabled: { opacity: 0.5 },
   photoBtn: {
     borderWidth: StyleSheet.hairlineWidth,

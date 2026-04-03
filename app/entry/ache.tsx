@@ -32,6 +32,7 @@ export default function AcheEntryScreen() {
       severity,
       bristol_type: null,
       name: null,
+      breaks_fast: 1,
       created_at: Date.now(),
     });
     router.back();

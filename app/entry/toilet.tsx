@@ -33,6 +33,7 @@ export default function ToiletEntryScreen() {
       severity: null,
       bristol_type: bristolEnabled ? bristolType : null,
       name: null,
+      breaks_fast: 1,
       created_at: Date.now(),
     });
     router.back();
