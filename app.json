@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "food-diary",
+    "name": "Gutsy",
     "slug": "food-diary",
     "scheme": "food-diary",
     "version": "1.0.0",
@@ -34,8 +34,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Food Diary needs access to your photo library so you can attach a photo to a food entry.",
-          "cameraPermission": "Food Diary needs your camera to take a photo of your meal."
+          "photosPermission": "Gutsy needs access to your photo library so you can attach a photo to a food entry.",
+          "cameraPermission": "Gutsy needs your camera to take a photo of your meal."
         }
       ],
       "expo-font"
