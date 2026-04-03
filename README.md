@@ -11,6 +11,7 @@ Diagnosing food intolerances and digestive problems is hard without data. This a
 - **Log food entries** — free text, optional photo, optional AI-assisted description
 - **Log ache events** — timestamp, optional notes, optional severity (1–5)
 - **Log toilet breaks** — timestamp, optional notes, optional Bristol stool type (1–7, configurable)
+- **Log medication** — name (with autocomplete from history), optional notes
 - **Track your fasting window** — first meal of the day starts the window; a notification fires before it closes
 - **Day timeline** — browse your log day by day
 - **Export to PDF** — select a date range and share with your doctor or dietician
@@ -36,7 +37,7 @@ npm run android  # Android emulator
 
 ## What's built
 
-All four planned phases are complete:
+All planned phases are complete:
 
 | Phase | Change | Description |
 |---|---|---|
@@ -44,6 +45,7 @@ All four planned phases are complete:
 | 2 | `core-logging` | Timeline, entry forms, fasting window, notifications, settings |
 | 3 | `ai-photo-assist` | Camera, image resizing, OpenRouter vision API integration |
 | 4 | `export` | Date range picker, PDF generation, system share sheet |
+| 5 | `medication` | Medication logging with name autocomplete and PDF export support |
 
 Each phase is a self-contained OpenSpec change in `openspec/changes/`. See `CLAUDE.md` for how to work with the codebase.
 
