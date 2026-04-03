@@ -162,7 +162,8 @@ export default function TimelineScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.topAccent}>
+      <View style={styles.container}>
       <DateHeader
         selectedDate={selectedDate}
         onPrev={() =>
@@ -194,6 +195,7 @@ export default function TimelineScreen() {
         onClose={closeActionSheet}
         onSelect={handleSelect}
       />
+      </View>
     </SafeAreaView>
   );
 }
@@ -202,6 +204,7 @@ export default function TimelineScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
+  topAccent: { flex: 1, backgroundColor: colors.primary },
 
   // Date header
   dateHeader: {
@@ -220,13 +223,13 @@ const styles = StyleSheet.create({
 
   // Fasting banner
   banner: {
-    backgroundColor: '#f0f7ff',
+    backgroundColor: '#f0f7f3',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#d0e8ff',
+    borderBottomColor: '#c8e6d4',
   },
-  bannerText: { fontSize: 14, color: '#0057b3' },
+  bannerText: { fontSize: 14, color: colors.primary },
 
   // Event list
   listContent: { flexGrow: 1, paddingBottom: 100 },

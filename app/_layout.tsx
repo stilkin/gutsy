@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { runMigrations } from '@/db/migrations';
 import { useAppStore } from '@/store';
+import { colors } from '@/colors';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -29,10 +31,13 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <>
+      <StatusBar style="light" backgroundColor={colors.primary} />
+      <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="export" options={{ presentation: 'modal' }} />
     </Stack>
+    </>
   );
 }
 

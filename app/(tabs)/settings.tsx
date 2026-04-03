@@ -12,7 +12,7 @@ import {
 import { router } from 'expo-router';
 import { useAppStore } from '@/store';
 import { loadApiKey, saveApiKey, clearApiKey } from '@/settings/apiKey';
-import { colors } from '@/colors';
+import { colors, switchColors } from '@/colors';
 
 // ── Stepper sub-component ─────────────────────────────────────────────────────
 
@@ -79,7 +79,8 @@ export default function SettingsScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.topAccent}>
+      <View style={styles.container}>
       <ScrollView>
         <Text style={styles.title}>Settings</Text>
 
@@ -100,6 +101,8 @@ export default function SettingsScreen() {
           <Switch
             value={settings.toiletTrackingEnabled}
             onValueChange={(v) => updateSetting('toiletTrackingEnabled', v)}
+            trackColor={switchColors.trackColor}
+            thumbColor={switchColors.thumbColor}
           />
         </View>
 
@@ -109,6 +112,8 @@ export default function SettingsScreen() {
             <Switch
               value={settings.bristolScaleEnabled}
               onValueChange={(v) => updateSetting('bristolScaleEnabled', v)}
+              trackColor={switchColors.trackColor}
+              thumbColor={switchColors.thumbColor}
             />
           </View>
         )}
@@ -144,6 +149,7 @@ export default function SettingsScreen() {
           <Text style={styles.chevron}>›</Text>
         </TouchableOpacity>
       </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -152,6 +158,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
+  topAccent: { flex: 1, backgroundColor: colors.primary },
   title: {
     fontSize: 28,
     fontWeight: 'bold',

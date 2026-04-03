@@ -20,7 +20,7 @@ import { resizeForStorage } from '@/images/processImage';
 import { describeImage } from '@/ai/describeImage';
 import { loadApiKey } from '@/settings/apiKey';
 import { useAppStore } from '@/store';
-import { colors } from '@/colors';
+import { colors, switchColors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
 import { EntryFormHeader } from '@/components/EntryFormHeader';
 import { TimePickerField } from '@/components/TimePickerField';
@@ -171,7 +171,12 @@ export default function FoodEntryScreen() {
       {/* Breaks fast toggle */}
       <View style={[entryFormStyles.field, styles.switchRow]}>
         <Text style={entryFormStyles.label}>Breaks fast</Text>
-        <Switch value={breaksFast} onValueChange={setBreaksFast} />
+        <Switch
+          value={breaksFast}
+          onValueChange={setBreaksFast}
+          trackColor={switchColors.trackColor}
+          thumbColor={switchColors.thumbColor}
+        />
       </View>
 
       {/* Photo source sheet */}
