@@ -99,16 +99,18 @@ export async function getImageForEvent(eventId: number): Promise<string | null> 
 }
 
 export async function removeImageForEvent(eventId: number): Promise<void> {
-  const row = await db.getFirstAsync<{ file_path: string }>(
-    `SELECT file_path FROM images WHERE event_id = ? ORDER BY id ASC LIMIT 1`,
+  const rows = await db.getAllAsync<{ file_path: string }>(
+    `SELECT file_path FROM images WHERE event_id = ?`,
     [eventId]
   );
-  if (!row) return;
+  if (rows.length === 0) return;
   await db.runAsync(`DELETE FROM images WHERE event_id = ?`, [eventId]);
-  try {
-    await FileSystem.deleteAsync(row.file_path, { idempotent: true });
-  } catch {
-    // Missing file is non-fatal
+  for (const row of rows) {
+    try {
+      await FileSystem.deleteAsync(row.file_path, { idempotent: true });
+    } catch {
+      // Missing file is non-fatal
+    }
   }
 }
 

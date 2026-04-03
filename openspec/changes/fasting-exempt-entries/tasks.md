@@ -9,7 +9,7 @@
 
 ## 3. Food Entry Form
 
-- [x] 3.1 Add `breaksfast` state (default `true`) to `app/entry/food.tsx`
+- [x] 3.1 Add `breaksFast` state (default `true`) to `app/entry/food.tsx`
 - [x] 3.2 Render a "Breaks fast" toggle row in the form (below notes, above save)
 - [x] 3.3 Pass `breaks_fast: breaksFast ? 1 : 0` to `insertEvent` on save
 - [x] 3.4 Pass `breaks_fast` value when calling `addEvent` to update Zustand store

@@ -59,7 +59,7 @@ export default function FoodEntryScreen() {
     if (!editId) return;
     setLoading(true);
     Promise.all([getEventById(editId), getImageForEvent(editId)]).then(([event, imagePath]) => {
-      if (!event) return;
+      if (!event) { setLoading(false); router.back(); return; }
       setTimestamp(new Date(event.timestamp));
       setNotes(event.notes ?? '');
       setBreaksFast(event.breaks_fast !== 0);

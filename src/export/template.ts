@@ -71,7 +71,7 @@ export function buildHtml(
   </style>
 </head>
 <body>
-  <h1>Food Diary</h1>
+  <h1>Gutsy</h1>
   <p class="meta">${headerRange} &middot; Exported ${exportedAt}</p>
   ${body}
 </body>

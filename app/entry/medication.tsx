@@ -38,7 +38,7 @@ export default function MedicationEntryScreen() {
     if (!editId) return;
     setLoading(true);
     getEventById(editId).then((event) => {
-      if (!event) return;
+      if (!event) { setLoading(false); router.back(); return; }
       setTimestamp(new Date(event.timestamp));
       setName(event.name ?? '');
       setNotes(event.notes ?? '');
