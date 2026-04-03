@@ -24,10 +24,10 @@
 
 ## 5. Smoke Test
 
-- [ ] 5.1 Tap a food entry → form opens pre-populated; edit notes and save → timeline shows updated notes
+- [x] 5.1 Tap a food entry → form opens pre-populated; edit notes and save → timeline shows updated notes
 - [ ] 5.2 Tap a food entry with an image → existing image shown; remove it with confirmation → image gone from timeline entry
 - [ ] 5.3 Tap a food entry → replace image with new photo → new image persisted
-- [ ] 5.4 Tap an ache entry → edit severity → timeline shows updated severity
-- [ ] 5.5 Tap a medication entry → edit name → timeline shows updated name
-- [ ] 5.6 Tap a toilet entry → edit notes → timeline reflects change
-- [ ] 5.7 Tap an entry and change its timestamp to an earlier time → timeline re-orders correctly
+- [x] 5.4 Tap an ache entry → edit severity → timeline shows updated severity
+- [x] 5.5 Tap a medication entry → edit name → timeline shows updated name
+- [x] 5.6 Tap a toilet entry → edit notes → timeline reflects change
+- [x] 5.7 Tap an entry and change its timestamp to an earlier time → timeline re-orders correctly
