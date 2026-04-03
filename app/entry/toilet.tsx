@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
-import { insertEvent } from '@/db/queries';
+import { router, useLocalSearchParams } from 'expo-router';
+import { insertEvent, updateEvent, getEventById } from '@/db/queries';
 import { useAppStore } from '@/store';
 import { colors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
@@ -13,35 +13,66 @@ export default function ToiletEntryScreen() {
   const [timestamp, setTimestamp] = useState(new Date());
   const [notes, setNotes] = useState('');
   const [bristolType, setBristolType] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const editId = id ? Number(id) : null;
 
   const addEvent = useAppStore((s) => s.addEvent);
+  const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
+  const selectedDate = useAppStore((s) => s.selectedDate);
   const bristolEnabled = useAppStore((s) => s.settings.bristolScaleEnabled);
 
+  useEffect(() => {
+    if (!editId) return;
+    setLoading(true);
+    getEventById(editId).then((event) => {
+      if (!event) return;
+      setTimestamp(new Date(event.timestamp));
+      setNotes(event.notes ?? '');
+      setBristolType(event.bristol_type);
+      setLoading(false);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   async function handleSave() {
-    const id = await insertEvent({
-      type: 'toilet',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: bristolEnabled ? bristolType : null,
-    });
-    addEvent({
-      id,
-      type: 'toilet',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: bristolEnabled ? bristolType : null,
-      name: null,
-      breaks_fast: 1,
-      created_at: Date.now(),
-    });
-    router.back();
+    if (editId) {
+      await updateEvent(editId, {
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: bristolEnabled ? bristolType : null,
+        name: null,
+        breaks_fast: 1,
+      });
+      await loadEventsForDate(selectedDate);
+      router.back();
+    } else {
+      const id = await insertEvent({
+        type: 'toilet',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: bristolEnabled ? bristolType : null,
+      });
+      addEvent({
+        id,
+        type: 'toilet',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: bristolEnabled ? bristolType : null,
+        name: null,
+        breaks_fast: 1,
+        created_at: Date.now(),
+      });
+      router.back();
+    }
   }
 
   return (
     <SafeAreaView style={entryFormStyles.container}>
-      <EntryFormHeader title="Toilet break" onSave={handleSave} />
+      <EntryFormHeader title="Toilet break" onSave={handleSave} saveDisabled={loading} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       <View style={entryFormStyles.field}>

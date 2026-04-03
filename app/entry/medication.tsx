@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
-import { insertEvent, getMedicationNames } from '@/db/queries';
+import { router, useLocalSearchParams } from 'expo-router';
+import { insertEvent, updateEvent, getEventById, getMedicationNames } from '@/db/queries';
 import { useAppStore } from '@/store';
 import { colors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
@@ -18,15 +18,33 @@ export default function MedicationEntryScreen() {
   const [name, setName] = useState('');
   const [notes, setNotes] = useState('');
   const [nameError, setNameError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [allNames, setAllNames] = useState<string[]>([]);
 
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const editId = id ? Number(id) : null;
+
   const addEvent = useAppStore((s) => s.addEvent);
+  const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
+  const selectedDate = useAppStore((s) => s.selectedDate);
 
   useEffect(() => {
     getMedicationNames().then(setAllNames);
   }, []);
+
+  useEffect(() => {
+    if (!editId) return;
+    setLoading(true);
+    getEventById(editId).then((event) => {
+      if (!event) return;
+      setTimestamp(new Date(event.timestamp));
+      setName(event.name ?? '');
+      setNotes(event.notes ?? '');
+      setLoading(false);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleNameChange(text: string) {
     setName(text);
@@ -52,32 +70,45 @@ export default function MedicationEntryScreen() {
       return;
     }
 
-    const id = await insertEvent({
-      type: 'medication',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: null,
-      name: normalised,
-    });
+    if (editId) {
+      await updateEvent(editId, {
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        name: normalised,
+        breaks_fast: 1,
+      });
+      await loadEventsForDate(selectedDate);
+      router.back();
+    } else {
+      const id = await insertEvent({
+        type: 'medication',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        name: normalised,
+      });
 
-    addEvent({
-      id,
-      type: 'medication',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: null,
-      name: normalised,
-      breaks_fast: 1,
-      created_at: Date.now(),
-    });
-    router.back();
+      addEvent({
+        id,
+        type: 'medication',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        name: normalised,
+        breaks_fast: 1,
+        created_at: Date.now(),
+      });
+      router.back();
+    }
   }
 
   return (
     <SafeAreaView style={entryFormStyles.container}>
-      <EntryFormHeader title="Medication" onSave={handleSave} />
+      <EntryFormHeader title="Medication" onSave={handleSave} saveDisabled={loading} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       {/* Name field + autocomplete */}

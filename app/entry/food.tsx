@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   View,
@@ -13,9 +13,16 @@ import {
   Switch,
   StyleSheet,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import { insertEvent, insertImage } from '@/db/queries';
+import {
+  insertEvent,
+  insertImage,
+  updateEvent,
+  getEventById,
+  getImageForEvent,
+  removeImageForEvent,
+} from '@/db/queries';
 import { resizeForStorage } from '@/images/processImage';
 import { describeImage } from '@/ai/describeImage';
 import { loadApiKey } from '@/settings/apiKey';
@@ -35,7 +42,31 @@ export default function FoodEntryScreen() {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
+  // Edit mode image state
+  const [existingImagePath, setExistingImagePath] = useState<string | null>(null);
+  const [existingImageRemoved, setExistingImageRemoved] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const editId = id ? Number(id) : null;
+
   const addEvent = useAppStore((s) => s.addEvent);
+  const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
+  const selectedDate = useAppStore((s) => s.selectedDate);
+
+  useEffect(() => {
+    if (!editId) return;
+    setLoading(true);
+    Promise.all([getEventById(editId), getImageForEvent(editId)]).then(([event, imagePath]) => {
+      if (!event) return;
+      setTimestamp(new Date(event.timestamp));
+      setNotes(event.notes ?? '');
+      setBreaksFast(event.breaks_fast !== 0);
+      setExistingImagePath(imagePath);
+      setLoading(false);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleCamera() {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -88,49 +119,83 @@ export default function FoodEntryScreen() {
   }
 
   async function handleSave() {
-    const id = await insertEvent({
-      type: 'food',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: null,
-      breaks_fast: breaksFast ? 1 : 0,
-    });
+    if (editId) {
+      await updateEvent(editId, {
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        name: null,
+        breaks_fast: breaksFast ? 1 : 0,
+      });
 
-    if (photoUri) {
-      try {
-        const storedPath = await resizeForStorage(photoUri);
-        await insertImage(id, storedPath, null);
-      } catch (e) {
-        console.warn('Failed to store image:', e);
+      // Remove old image if explicitly removed, or if being replaced
+      if (existingImageRemoved || (photoUri && existingImagePath)) {
+        await removeImageForEvent(editId);
       }
-    }
 
-    addEvent({
-      id,
-      type: 'food' as const,
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity: null,
-      bristol_type: null,
-      name: null,
-      breaks_fast: breaksFast ? 1 : 0,
-      created_at: Date.now(),
-    });
-    router.back();
+      // Store new image if picked
+      if (photoUri) {
+        try {
+          const storedPath = await resizeForStorage(photoUri);
+          await insertImage(editId, storedPath, null);
+        } catch (e) {
+          console.warn('Failed to store image:', e);
+        }
+      }
+
+      await loadEventsForDate(selectedDate);
+      router.back();
+    } else {
+      const id = await insertEvent({
+        type: 'food',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        breaks_fast: breaksFast ? 1 : 0,
+      });
+
+      if (photoUri) {
+        try {
+          const storedPath = await resizeForStorage(photoUri);
+          await insertImage(id, storedPath, null);
+        } catch (e) {
+          console.warn('Failed to store image:', e);
+        }
+      }
+
+      addEvent({
+        id,
+        type: 'food' as const,
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity: null,
+        bristol_type: null,
+        name: null,
+        breaks_fast: breaksFast ? 1 : 0,
+        created_at: Date.now(),
+      });
+      router.back();
+    }
   }
+
+  // Determine what to show in the photo area
+  const showExistingImage = existingImagePath !== null && !existingImageRemoved && photoUri === null;
+  const showNewPhoto = photoUri !== null;
 
   return (
     <SafeAreaView style={entryFormStyles.container}>
-      <EntryFormHeader title="Food" onSave={handleSave} saveDisabled={aiLoading} />
+      <EntryFormHeader title="Food" onSave={handleSave} saveDisabled={loading || aiLoading} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       {/* Photo field */}
       <View style={entryFormStyles.field}>
         <Text style={entryFormStyles.label}>Photo</Text>
-        {photoUri ? (
+        {showNewPhoto ? (
+          // Freshly picked — remove silently
           <View style={styles.previewContainer}>
-            <Image source={{ uri: photoUri }} style={styles.preview} />
+            <Image source={{ uri: photoUri! }} style={styles.preview} />
             <TouchableOpacity
               style={styles.removeBtn}
               onPress={() => {
@@ -141,7 +206,28 @@ export default function FoodEntryScreen() {
               <Text style={styles.removeBtnText}>✕</Text>
             </TouchableOpacity>
           </View>
+        ) : showExistingImage ? (
+          // Stored image — confirm before removing
+          <View style={styles.previewContainer}>
+            <Image source={{ uri: existingImagePath! }} style={styles.preview} />
+            <TouchableOpacity
+              style={styles.removeBtn}
+              onPress={() => {
+                Alert.alert(
+                  'Remove photo?',
+                  'This will permanently delete the stored photo.',
+                  [
+                    { text: 'Cancel', style: 'cancel' },
+                    { text: 'Remove', style: 'destructive', onPress: () => setExistingImageRemoved(true) },
+                  ]
+                );
+              }}
+            >
+              <Text style={styles.removeBtnText}>✕</Text>
+            </TouchableOpacity>
+          </View>
         ) : (
+          // No photo
           <TouchableOpacity style={styles.photoBtn} onPress={() => setShowPhotoSheet(true)}>
             <Text style={styles.photoBtnText}>Add Photo</Text>
           </TouchableOpacity>

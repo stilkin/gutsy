@@ -69,6 +69,49 @@ export async function getEventsByDateRange(
   );
 }
 
+export async function getEventById(id: number): Promise<DiaryEvent | null> {
+  return db.getFirstAsync<DiaryEvent>(`SELECT * FROM events WHERE id = ?`, [id]);
+}
+
+export async function updateEvent(
+  id: number,
+  fields: {
+    timestamp: number;
+    notes: string | null;
+    severity: number | null;
+    bristol_type: number | null;
+    name: string | null;
+    breaks_fast: number;
+  }
+): Promise<void> {
+  await db.runAsync(
+    `UPDATE events SET timestamp = ?, notes = ?, severity = ?, bristol_type = ?, name = ?, breaks_fast = ? WHERE id = ?`,
+    [fields.timestamp, fields.notes, fields.severity, fields.bristol_type, fields.name, fields.breaks_fast, id]
+  );
+}
+
+export async function getImageForEvent(eventId: number): Promise<string | null> {
+  const row = await db.getFirstAsync<{ file_path: string }>(
+    `SELECT file_path FROM images WHERE event_id = ? ORDER BY id ASC LIMIT 1`,
+    [eventId]
+  );
+  return row?.file_path ?? null;
+}
+
+export async function removeImageForEvent(eventId: number): Promise<void> {
+  const row = await db.getFirstAsync<{ file_path: string }>(
+    `SELECT file_path FROM images WHERE event_id = ? ORDER BY id ASC LIMIT 1`,
+    [eventId]
+  );
+  if (!row) return;
+  await db.runAsync(`DELETE FROM images WHERE event_id = ?`, [eventId]);
+  try {
+    await FileSystem.deleteAsync(row.file_path, { idempotent: true });
+  } catch {
+    // Missing file is non-fatal
+  }
+}
+
 export async function getMedicationNames(): Promise<string[]> {
   const rows = await db.getAllAsync<{ name: string }>(
     `SELECT DISTINCT name FROM events WHERE type='medication' AND name IS NOT NULL ORDER BY name`

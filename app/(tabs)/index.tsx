@@ -91,9 +91,10 @@ const TYPE_ICONS: Record<EventType, React.ComponentProps<typeof Ionicons>['name'
 interface EventRowProps {
   event: DiaryEvent;
   onDelete: () => void;
+  onPress: () => void;
 }
 
-function EventRow({ event, onDelete }: EventRowProps) {
+function EventRow({ event, onDelete, onPress }: EventRowProps) {
   function handleLongPress() {
     Alert.alert(
       'Delete entry?',
@@ -108,7 +109,7 @@ function EventRow({ event, onDelete }: EventRowProps) {
   const primaryLabel = event.type === 'medication' && event.name ? event.name : null;
 
   return (
-    <TouchableOpacity style={styles.row} onLongPress={handleLongPress}>
+    <TouchableOpacity style={styles.row} onPress={onPress} onLongPress={handleLongPress}>
       <Ionicons
         name={TYPE_ICONS[event.type]}
         size={22}
@@ -187,7 +188,11 @@ export default function TimelineScreen() {
         data={events}
         keyExtractor={(e) => String(e.id)}
         renderItem={({ item }) => (
-          <EventRow event={item} onDelete={() => handleDelete(item)} />
+          <EventRow
+            event={item}
+            onDelete={() => handleDelete(item)}
+            onPress={() => router.push(`/entry/${item.type}?id=${item.id}`)}
+          />
         )}
         ListEmptyComponent={
           <Text style={styles.empty}>No entries for this day.</Text>

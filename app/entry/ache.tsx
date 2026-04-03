@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
-import { insertEvent } from '@/db/queries';
+import { router, useLocalSearchParams } from 'expo-router';
+import { insertEvent, updateEvent, getEventById } from '@/db/queries';
 import { useAppStore } from '@/store';
 import { colors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
@@ -13,34 +13,65 @@ export default function AcheEntryScreen() {
   const [timestamp, setTimestamp] = useState(new Date());
   const [notes, setNotes] = useState('');
   const [severity, setSeverity] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const { id } = useLocalSearchParams<{ id?: string }>();
+  const editId = id ? Number(id) : null;
 
   const addEvent = useAppStore((s) => s.addEvent);
+  const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
+  const selectedDate = useAppStore((s) => s.selectedDate);
+
+  useEffect(() => {
+    if (!editId) return;
+    setLoading(true);
+    getEventById(editId).then((event) => {
+      if (!event) return;
+      setTimestamp(new Date(event.timestamp));
+      setNotes(event.notes ?? '');
+      setSeverity(event.severity);
+      setLoading(false);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSave() {
-    const id = await insertEvent({
-      type: 'ache',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity,
-      bristol_type: null,
-    });
-    addEvent({
-      id,
-      type: 'ache',
-      timestamp: timestamp.getTime(),
-      notes: notes.trim() || null,
-      severity,
-      bristol_type: null,
-      name: null,
-      breaks_fast: 1,
-      created_at: Date.now(),
-    });
-    router.back();
+    if (editId) {
+      await updateEvent(editId, {
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity,
+        bristol_type: null,
+        name: null,
+        breaks_fast: 1,
+      });
+      await loadEventsForDate(selectedDate);
+      router.back();
+    } else {
+      const id = await insertEvent({
+        type: 'ache',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity,
+        bristol_type: null,
+      });
+      addEvent({
+        id,
+        type: 'ache',
+        timestamp: timestamp.getTime(),
+        notes: notes.trim() || null,
+        severity,
+        bristol_type: null,
+        name: null,
+        breaks_fast: 1,
+        created_at: Date.now(),
+      });
+      router.back();
+    }
   }
 
   return (
     <SafeAreaView style={entryFormStyles.container}>
-      <EntryFormHeader title="Ache" onSave={handleSave} />
+      <EntryFormHeader title="Ache" onSave={handleSave} saveDisabled={loading} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       <View style={entryFormStyles.field}>
