@@ -45,10 +45,14 @@ export function buildHtml(
         const type = e.type.charAt(0).toUpperCase() + e.type.slice(1);
         const icon = TYPE_EMOJI[e.type];
         let detail = '';
-        if (e.type === 'medication' && e.name) detail = ` — ${esc(e.name)}`;
-        if (e.severity != null) detail = ` — Severity: ${e.severity}/5`;
-        if (e.bristol_type != null) detail = ` — Bristol: ${e.bristol_type}`;
-        if (e.type === 'food' && e.breaks_fast === 0) detail = ` (fasting-safe)`;
+        if (e.type === 'medication' && e.name) {
+          detail = ` — ${esc(e.name)}`;
+        } else if (e.type === 'ache' && e.severity != null) {
+          detail = ` — Severity: ${e.severity}/5`;
+        } else if (e.type === 'toilet' && e.bristol_type != null) {
+          detail = ` — Bristol: ${e.bristol_type}`;
+        }
+        if (e.type === 'food' && e.breaks_fast === 0) detail += ` (fasting-safe)`;
         body += `<div class="event">`;
         body += `<div class="time-col">${icon} ${time}</div>`;
         body += `<div class="content-col">`;
