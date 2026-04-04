@@ -97,6 +97,13 @@ export default function SettingsScreen() {
       <ScrollView>
         <Text style={styles.title}>Settings</Text>
 
+        <Text style={styles.sectionHeader}>Export</Text>
+
+        <TouchableOpacity style={styles.row} onPress={() => router.push('/export')}>
+          <Text style={styles.rowLabel}>Export diary</Text>
+          <Text style={styles.chevron}>›</Text>
+        </TouchableOpacity>
+
         <Text style={styles.sectionHeader}>Fasting Window</Text>
 
         <Stepper
@@ -133,28 +140,6 @@ export default function SettingsScreen() {
 
         <Text style={styles.sectionHeader}>AI Assistant</Text>
 
-        <TouchableOpacity style={styles.row} onPress={() => setShowLanguagePicker(true)}>
-          <Text style={styles.rowLabel}>Description language</Text>
-          <Text style={styles.rowValue}>{LANGUAGE_NAMES[settings.language]} ›</Text>
-        </TouchableOpacity>
-
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Model</Text>
-          <View style={styles.segmented}>
-            {tierOptions.map(({ key, label }) => (
-              <TouchableOpacity
-                key={key}
-                style={[styles.segmentBtn, settings.modelTier === key && styles.segmentBtnActive]}
-                onPress={() => updateSetting('modelTier', key)}
-              >
-                <Text style={[styles.segmentText, settings.modelTier === key && styles.segmentTextActive]}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
         <View style={styles.apiKeyField}>
           <Text style={styles.rowLabel}>OpenRouter API Key</Text>
           <TextInput
@@ -177,11 +162,27 @@ export default function SettingsScreen() {
             <Text style={styles.apiKeySaveBtnText}>{apiKeySaved ? 'Saved' : 'Save'}</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.sectionHeader}>Export</Text>
 
-        <TouchableOpacity style={styles.row} onPress={() => router.push('/export')}>
-          <Text style={styles.rowLabel}>Export diary</Text>
-          <Text style={styles.chevron}>›</Text>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Model</Text>
+          <View style={styles.segmented}>
+            {tierOptions.map(({ key, label }) => (
+              <TouchableOpacity
+                key={key}
+                style={[styles.segmentBtn, settings.modelTier === key && styles.segmentBtnActive]}
+                onPress={() => updateSetting('modelTier', key)}
+              >
+                <Text style={[styles.segmentText, settings.modelTier === key && styles.segmentTextActive]}>
+                  {label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.row} onPress={() => setShowLanguagePicker(true)}>
+          <Text style={styles.rowLabel}>Description language</Text>
+          <Text style={styles.rowValue}>{LANGUAGE_NAMES[settings.language]} ›</Text>
         </TouchableOpacity>
       </ScrollView>
       </View>

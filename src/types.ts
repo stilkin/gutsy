@@ -20,9 +20,9 @@ export type Language = 'en' | 'es' | 'pt' | 'fr' | 'de' | 'it' | 'nl' | 'pl' | '
 export type ModelTier = 'free' | 'normal' | 'premium';
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
-  en: 'English', es: 'Español', pt: 'Português', fr: 'Français',
-  de: 'Deutsch', it: 'Italiano', nl: 'Nederlands', pl: 'Polski',
-  tr: 'Türkçe', id: 'Bahasa Indonesia',
+  en: '🇬🇧 English', es: '🇪🇸 Español', pt: '🇵🇹 Português', fr: '🇫🇷 Français',
+  de: '🇩🇪 Deutsch', it: '🇮🇹 Italiano', nl: '🇳🇱 Nederlands', pl: '🇵🇱 Polski',
+  tr: '🇹🇷 Türkçe', id: '🇮🇩 Bahasa Indonesia',
 };
 
 export interface Settings {

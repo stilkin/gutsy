@@ -1,7 +1,6 @@
 import { File } from 'expo-file-system';
 import { resizeForApi } from '@/images/processImage';
 import type { Language, ModelTier } from '@/types';
-import { LANGUAGE_NAMES } from '@/types';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -24,10 +23,16 @@ export async function describeImage(
   const resizedUri = await resizeForApi(imagePath);
   const base64 = await new File(resizedUri).base64();
 
+  const PROMPT_LANGUAGES: Record<Language, string> = {
+    en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
+    de: 'German', it: 'Italian', nl: 'Dutch', pl: 'Polish',
+    tr: 'Turkish', id: 'Indonesian',
+  };
+
   let prompt =
     'List only the food and drink items visible in this image. Be concise (one or two sentences). Do not describe plates, packaging, background, or anything that is not food or drink.';
   if (language !== 'en') {
-    prompt += ` Respond in ${LANGUAGE_NAMES[language]}.`;
+    prompt += ` Respond in ${PROMPT_LANGUAGES[language]}.`;
   }
 
   const response = await fetch(OPENROUTER_URL, {
