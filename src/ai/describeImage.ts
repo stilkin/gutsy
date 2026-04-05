@@ -10,6 +10,12 @@ const TIER_MODELS: Record<ModelTier, string> = {
   premium: 'anthropic/claude-sonnet-4.6',
 };
 
+const PROMPT_LANGUAGES: Record<Language, string> = {
+  en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
+  de: 'German', it: 'Italian', nl: 'Dutch', pl: 'Polish',
+  tr: 'Turkish', id: 'Indonesian',
+};
+
 /**
  * Sends the image at `imagePath` to OpenRouter's vision API and returns a
  * one-or-two sentence food description. Throws on any failure — caller handles.
@@ -22,12 +28,6 @@ export async function describeImage(
 ): Promise<string> {
   const resizedUri = await resizeForApi(imagePath);
   const base64 = await new File(resizedUri).base64();
-
-  const PROMPT_LANGUAGES: Record<Language, string> = {
-    en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
-    de: 'German', it: 'Italian', nl: 'Dutch', pl: 'Polish',
-    tr: 'Turkish', id: 'Indonesian',
-  };
 
   let prompt =
     'List only the food and drink items visible in this image. Be concise (one or two sentences). Do not describe plates, packaging, background, or anything that is not food or drink.';
