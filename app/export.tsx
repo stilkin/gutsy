@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 import { getEventsByDateRange } from '@/db/queries';
 import { prepareImages } from '@/export/prepareImages';
 import { buildHtml } from '@/export/template';
+import { loadSettings } from '@/settings';
 import { colors } from '@/colors';
 
 export default function ExportScreen() {
@@ -32,9 +33,12 @@ export default function ExportScreen() {
   async function handleExport() {
     setLoading(true);
     try {
-      const events = await getEventsByDateRange(startDate, endDate);
+      const [events, settings] = await Promise.all([
+        getEventsByDateRange(startDate, endDate),
+        loadSettings(),
+      ]);
       const images = await prepareImages(events);
-      const html = buildHtml(events, images, startDate, endDate);
+      const html = buildHtml(events, images, startDate, endDate, settings.windowHours);
       const { uri } = await Print.printToFileAsync({ html });
       await Sharing.shareAsync(uri, {
         mimeType: 'application/pdf',

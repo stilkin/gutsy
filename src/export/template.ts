@@ -16,7 +16,8 @@ export function buildHtml(
   events: DiaryEventWithImage[],
   images: Record<number, string>,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  windowHours?: number
 ): string {
   const headerRange =
     `${dayjs(startDate).format('D MMM YYYY')} – ${dayjs(endDate).format('D MMM YYYY')}`;
@@ -40,6 +41,14 @@ export function buildHtml(
   } else {
     for (const [dateKey, dayEvents] of byDay) {
       body += `<h2>${dayjs(dateKey).format('dddd, D MMMM YYYY')}</h2>`;
+      if (windowHours != null) {
+        const breaking = dayEvents.filter((e) => e.type === 'food' && e.breaks_fast !== 0);
+        if (breaking.length > 0) {
+          const windowStart = Math.min(...breaking.map((e) => e.timestamp));
+          const windowEnd = windowStart + windowHours * 3_600_000;
+          body += `<div class="fasting-window">Window: ${dayjs(windowStart).format('HH:mm')} – ${dayjs(windowEnd).format('HH:mm')}</div>`;
+        }
+      }
       for (const e of dayEvents) {
         const time = dayjs(e.timestamp).format('HH:mm');
         const type = e.type.charAt(0).toUpperCase() + e.type.slice(1);
@@ -81,6 +90,7 @@ export function buildHtml(
     h1 { font-size: 20px; margin: 0 0 4px; }
     .meta { font-size: 12px; color: #888; margin-bottom: 24px; }
     h2 { font-size: 15px; font-weight: bold; margin: 14px 0 8px; border-bottom: 1px solid #2D7D4F; padding-bottom: 4px; color: #2D7D4F; }
+    .fasting-window { font-size: 12px; color: #2D7D4F; margin-bottom: 8px; }
     .event { margin-bottom: 8px; padding-left: 10px; border-left: 3px solid #A8D5B8; display: grid; grid-template-columns: auto 1fr; gap: 0 8px; }
     .time-col { font-size: 13px; color: #888; white-space: nowrap; }
     .content-col { min-width: 0; }
