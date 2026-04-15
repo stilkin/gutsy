@@ -1,4 +1,4 @@
-# Food Diary
+# Gutsy
 
 A mobile app for logging meals, symptoms, and intermittent fasting windows — built to help identify food-triggered digestive issues and share a readable diary with a dietician or physician.
 
