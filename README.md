@@ -49,10 +49,6 @@ All planned phases are complete:
 
 Each phase is a self-contained OpenSpec change in `openspec/changes/`. See `CLAUDE.md` for how to work with the codebase.
 
-## License
-
-[PolyForm Noncommercial 1.0.0](LICENSE) — free to use for personal and non-commercial purposes.
-
 ## Post-MVP ideas
 
 - In-app correlation analysis (which foods precede ache events?)
@@ -66,3 +62,7 @@ If you enjoy Gutsy and want to support its development, consider buying me a dri
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/stilkin)
 
 Your support helps me continue developing and improving Gutsy! ☕
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE) — free to use for personal and non-commercial purposes.
