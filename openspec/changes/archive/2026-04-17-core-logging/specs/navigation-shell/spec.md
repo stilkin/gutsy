@@ -1,4 +1,4 @@
-## MODIFIED Requirements
+## ADDED Requirements
 
 ### Requirement: FAB opens action sheet
 The Timeline screen SHALL display a floating action button (FAB) in the bottom-right corner, above the tab bar.
