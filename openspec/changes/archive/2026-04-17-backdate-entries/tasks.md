@@ -17,7 +17,7 @@
 ## 4. Verify
 
 - [x] 4.1 Manual test: create entry from past day timeline — date defaults to that day
-- [ ] 4.2 Manual test: change date on entry form, confirm time is preserved
+- [x] 4.2 Manual test: change date on entry form, confirm time is preserved
 - [x] 4.3 Manual test: edit an existing entry, confirm stored date is shown and changeable
-- [ ] 4.4 Manual test: confirm future dates are not selectable
-- [ ] 4.5 Manual test: save backdated entry, confirm timeline stays on current date
+- [x] 4.4 Manual test: confirm future dates are not selectable
+- [x] 4.5 Manual test: save backdated entry, confirm timeline stays on current date
