@@ -14,17 +14,16 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "be.pocito.fooddiary"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.pocito.fooddiary"
+      "permissions": [],
+      "package": "be.pocito.fooddiary"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +38,8 @@
         "expo-image-picker",
         {
           "photosPermission": "Gutsy needs access to your photo library so you can attach a photo to a food entry.",
-          "cameraPermission": "Gutsy needs your camera to take a photo of your meal."
+          "cameraPermission": "Gutsy needs your camera to take a photo of your meal.",
+          "microphonePermission": false
         }
       ],
       "expo-font"
