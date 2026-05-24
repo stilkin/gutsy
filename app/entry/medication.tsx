@@ -30,7 +30,6 @@ export default function MedicationEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
 
   useEffect(() => {
@@ -85,7 +84,7 @@ export default function MedicationEntryScreen() {
       await loadEventsForDate(selectedDate);
       router.back();
     } else {
-      const id = await insertEvent({
+      await insertEvent({
         type: 'medication',
         timestamp: timestamp.getTime(),
         notes: notes.trim() || null,
@@ -94,17 +93,7 @@ export default function MedicationEntryScreen() {
         name: normalised,
       });
 
-      addEvent({
-        id,
-        type: 'medication',
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity: null,
-        bristol_type: null,
-        name: normalised,
-        breaks_fast: 1,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }

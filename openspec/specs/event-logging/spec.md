@@ -8,15 +8,15 @@ The system SHALL provide a form for logging a food event with a timestamp, optio
 
 #### Scenario: Food entry saved with notes
 - **WHEN** the user submits the food form with notes text
-- **THEN** a row with `type='food'`, the current timestamp, and the provided notes SHALL be inserted into `events`
+- **THEN** a row with `type='food'`, the timestamp selected in the form, and the provided notes SHALL be inserted into `events`
 
 #### Scenario: Food entry saved without notes
 - **WHEN** the user submits the food form with no notes
 - **THEN** a row with `type='food'` and a NULL `notes` field SHALL be inserted
 
-#### Scenario: Timestamp defaults to now
+#### Scenario: Timestamp defaults to the selected day
 - **WHEN** the food form opens
-- **THEN** the timestamp field SHALL default to the current date and time
+- **THEN** the timestamp field SHALL initialize from the currently selected timeline date and the current time, and remain user-editable (see the `entry-date-picker` capability)
 
 #### Scenario: Notes field is tall enough for comfortable input
 - **WHEN** any entry form (food, ache, toilet, medication) is displayed

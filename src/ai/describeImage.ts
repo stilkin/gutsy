@@ -5,7 +5,7 @@ import type { Language, ModelTier } from '@/types';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 const TIER_MODELS: Record<ModelTier, string> = {
-  free: 'qwen/qwen3.6-plus:free',
+  free: 'google/gemma-4-31b-it:free',
   normal: 'google/gemini-3-flash-preview',
   premium: 'anthropic/claude-sonnet-4.6',
 };

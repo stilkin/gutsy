@@ -22,7 +22,6 @@ export default function AcheEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
 
   useEffect(() => {
@@ -50,24 +49,14 @@ export default function AcheEntryScreen() {
       await loadEventsForDate(selectedDate);
       router.back();
     } else {
-      const id = await insertEvent({
+      await insertEvent({
         type: 'ache',
         timestamp: timestamp.getTime(),
         notes: notes.trim() || null,
         severity,
         bristol_type: null,
       });
-      addEvent({
-        id,
-        type: 'ache',
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity,
-        bristol_type: null,
-        name: null,
-        breaks_fast: 1,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }

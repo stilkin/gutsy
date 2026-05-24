@@ -23,7 +23,7 @@ The system SHALL map each tier to a specific OpenRouter model identifier.
 
 #### Scenario: Free tier model
 - **WHEN** the model tier is set to Free
-- **THEN** the system SHALL use the model `qwen/qwen3.6-plus:free` for AI descriptions
+- **THEN** the system SHALL use the model `google/gemma-4-31b-it:free` for AI descriptions
 
 #### Scenario: Normal tier model
 - **WHEN** the model tier is set to Normal

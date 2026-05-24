@@ -22,7 +22,6 @@ export default function ToiletEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
   const bristolEnabled = useAppStore((s) => s.settings.bristolScaleEnabled);
 
@@ -51,24 +50,14 @@ export default function ToiletEntryScreen() {
       await loadEventsForDate(selectedDate);
       router.back();
     } else {
-      const id = await insertEvent({
+      await insertEvent({
         type: 'toilet',
         timestamp: timestamp.getTime(),
         notes: notes.trim() || null,
         severity: null,
         bristol_type: bristolEnabled ? bristolType : null,
       });
-      addEvent({
-        id,
-        type: 'toilet',
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity: null,
-        bristol_type: bristolEnabled ? bristolType : null,
-        name: null,
-        breaks_fast: 1,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }

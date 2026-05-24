@@ -55,7 +55,6 @@ export default function FoodEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
   const settings = useAppStore((s) => s.settings);
   const [hasApiKey, setHasApiKey] = useState(false);
@@ -182,17 +181,7 @@ export default function FoodEntryScreen() {
         }
       }
 
-      addEvent({
-        id,
-        type: 'food' as const,
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity: null,
-        bristol_type: null,
-        name: null,
-        breaks_fast: breaksFast ? 1 : 0,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }

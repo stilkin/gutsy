@@ -1,7 +1,7 @@
 # entry-date-picker Specification
 
 ## Purpose
-TBD - created by archiving change backdate-entries. Update Purpose after archive.
+Lets users log entries for a day other than today. Every entry form shows an editable date field above the time field that defaults to the timeline's currently selected day, so events recorded after the fact are stored on the correct date. Future dates are not selectable, and saving an entry never changes which day the timeline is showing.
 ## Requirements
 ### Requirement: Date picker field on entry forms
 
