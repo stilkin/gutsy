@@ -37,6 +37,10 @@ Download the latest APK from the [Releases](../../releases/latest) page and side
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for build instructions, tech stack, and architecture details.
 
+## Credits
+
+Google Play feature graphic photo by [Spencer Stone](https://www.pexels.com/photo/glass-of-water-and-pieces-of-apple-by-calorie-counter-table-12499379/) on Pexels.
+
 ## License
 
 [PolyForm Noncommercial 1.0.0](LICENSE) — free to use for personal and non-commercial purposes.
