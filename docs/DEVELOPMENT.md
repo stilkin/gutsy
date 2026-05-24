@@ -31,7 +31,7 @@ All planned phases are complete:
 | Phase | Change | Description |
 |---|---|---|
 | 1 | `app-foundation` | Expo project, navigation shell, SQLite schema, Zustand store |
-| 2 | `core-logging` | Timeline, entry forms, fasting window, notifications, settings |
+| 2 | `core-logging` | Timeline, entry forms, fasting window, settings |
 | 3 | `ai-photo-assist` | Camera, image resizing, OpenRouter vision API integration |
 | 4 | `export` | Date range picker, PDF generation, system share sheet |
 | 5 | `medication` | Medication logging with name autocomplete and PDF export support |

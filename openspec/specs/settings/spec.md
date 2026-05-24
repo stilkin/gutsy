@@ -4,7 +4,7 @@
 TBD - created by archiving change core-logging. Update Purpose after archive.
 ## Requirements
 ### Requirement: Fasting window configuration
-The system SHALL allow the user to configure the feeding window duration and notification lead time.
+The system SHALL allow the user to configure the feeding window duration.
 
 #### Scenario: Window duration saved
 - **WHEN** the user changes the window duration setting
@@ -13,14 +13,6 @@ The system SHALL allow the user to configure the feeding window duration and not
 #### Scenario: Window duration default
 - **WHEN** the app is launched for the first time
 - **THEN** the window duration SHALL default to 8 hours
-
-#### Scenario: Notification lead time saved
-- **WHEN** the user changes the notification lead time
-- **THEN** the new value SHALL be persisted and used when scheduling future notifications
-
-#### Scenario: Notification lead time default
-- **WHEN** the app is launched for the first time
-- **THEN** the notification lead time SHALL default to 30 minutes
 
 ### Requirement: Toilet tracking toggle
 The system SHALL allow the user to enable or disable toilet break logging.
