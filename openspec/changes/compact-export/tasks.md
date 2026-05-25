@@ -15,9 +15,9 @@
 
 ## 4. Smoke Test
 
-- [ ] 4.1 Export a day with medication entries → each renders as single-line header (e.g. `10:34 — Medication — Carmenthin`)
-- [ ] 4.2 Export a day with ache entry → severity shown inline (e.g. `15:00 — Ache — Severity: 3/5`)
-- [ ] 4.3 Export a day with toilet entry → Bristol type shown inline (e.g. `12:15 — Toilet — Bristol: 5`)
-- [ ] 4.4 Export a day with a portrait food photo → image renders as 100×100px square, cropped from center
+- [x] 4.1 Export a day with medication entries → each renders as single-line header (e.g. `10:34 — Medication — Carmenthin`)
+- [x] 4.2 Export a day with ache entry → severity shown inline (e.g. `15:00 — Ache — Severity: 3/5`)
+- [x] 4.3 Export a day with toilet entry → Bristol type shown inline (e.g. `12:15 — Toilet — Bristol: 5`)
+- [x] 4.4 Export a day with a portrait food photo → image renders as 100×100px square, cropped from center
 - [ ] 4.5 Export a day with a fasting-safe food entry → header shows `(fasting-safe)` inline
-- [ ] 4.6 Compare page count of a multi-day export before and after — confirm reduction
+- [x] 4.6 Compare page count of a multi-day export before and after — confirm reduction

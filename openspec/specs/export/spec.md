@@ -1,6 +1,10 @@
-## MODIFIED Requirements
+# export Specification
 
+## Purpose
+TBD - created by archiving change ux-polish. Update Purpose after archive.
+## Requirements
 ### Requirement: Event details included
+Each event in the PDF export SHALL render with a compact single-line header including type-specific details.
 - **WHEN** a PDF is generated
 - **THEN** each event SHALL render its time and type on a single line formatted as `HH:mm — Type`
 - **AND** if the event is a medication entry with a name, the name SHALL appear inline after the type
@@ -39,6 +43,7 @@
 - **THEN** the photo SHALL render below the header as before
 
 ### Requirement: Images included and scaled
+Images in the PDF export SHALL render as square center-cropped thumbnails.
 - **WHEN** a PDF is generated and an entry has an associated image
 - **THEN** the image SHALL be rendered as a 100x100px square
 - **AND** the image SHALL be cropped from center using CSS `object-fit: cover` to fill the square without distortion
@@ -50,3 +55,4 @@
 #### Scenario: Landscape image is square-cropped
 - **WHEN** a landscape-oriented image is included in the PDF
 - **THEN** it SHALL render as a 100x100px square, cropped from center
+

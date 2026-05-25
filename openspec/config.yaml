@@ -9,7 +9,6 @@ context: |
   - Expo (React Native) with Expo Router
   - expo-sqlite — structured event data
   - expo-file-system — image files on disk, paths referenced in SQLite
-  - expo-notifications — local scheduled alerts (fasting window)
   - expo-camera + expo-image-manipulator — photo capture and resize
   - expo-print + expo-sharing — PDF export
   - Zustand — app state

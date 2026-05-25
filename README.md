@@ -23,7 +23,7 @@
 - **Log ache events** — timestamp, optional notes, optional severity (1–5)
 - **Log toilet breaks** — timestamp, optional notes, optional Bristol stool type (1–7, configurable)
 - **Log medication** — name (with autocomplete from history), optional notes
-- **Track your fasting window** — first meal of the day starts the window; a notification fires before it closes
+- **Track your fasting window** — first meal of the day starts the window
 - **Day timeline** — browse your log day by day
 - **Export to PDF** — select a date range and share with your doctor or dietician
 
@@ -36,6 +36,10 @@ Download the latest APK from the [Releases](../../releases/latest) page and side
 ## Building from source
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for build instructions, tech stack, and architecture details.
+
+## Credits
+
+Google Play feature graphic photo by [Spencer Stone](https://www.pexels.com/photo/glass-of-water-and-pieces-of-apple-by-calorie-counter-table-12499379/) on Pexels.
 
 ## License
 

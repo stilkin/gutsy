@@ -7,6 +7,7 @@ import { useAppStore } from '@/store';
 import { colors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
 import { EntryFormHeader } from '@/components/EntryFormHeader';
+import { DatePickerField } from '@/components/DatePickerField';
 import { TimePickerField } from '@/components/TimePickerField';
 
 function titleCase(s: string): string {
@@ -14,7 +15,10 @@ function titleCase(s: string): string {
 }
 
 export default function MedicationEntryScreen() {
-  const [timestamp, setTimestamp] = useState(new Date());
+  const selectedDate = useAppStore((s) => s.selectedDate);
+  const now = new Date();
+  const [y, m, d] = selectedDate.split('-').map(Number);
+  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
   const [name, setName] = useState('');
   const [notes, setNotes] = useState('');
   const [nameError, setNameError] = useState(false);
@@ -26,9 +30,7 @@ export default function MedicationEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
-  const selectedDate = useAppStore((s) => s.selectedDate);
 
   useEffect(() => {
     getMedicationNames().then(setAllNames);
@@ -82,7 +84,7 @@ export default function MedicationEntryScreen() {
       await loadEventsForDate(selectedDate);
       router.back();
     } else {
-      const id = await insertEvent({
+      await insertEvent({
         type: 'medication',
         timestamp: timestamp.getTime(),
         notes: notes.trim() || null,
@@ -91,17 +93,7 @@ export default function MedicationEntryScreen() {
         name: normalised,
       });
 
-      addEvent({
-        id,
-        type: 'medication',
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity: null,
-        bristol_type: null,
-        name: normalised,
-        breaks_fast: 1,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }
@@ -109,6 +101,7 @@ export default function MedicationEntryScreen() {
   return (
     <SafeAreaView style={entryFormStyles.container}>
       <EntryFormHeader title="Medication" onSave={handleSave} saveDisabled={loading} />
+      <DatePickerField timestamp={timestamp} onChangeDate={setTimestamp} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       {/* Name field + autocomplete */}

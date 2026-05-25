@@ -17,7 +17,6 @@ interface EventsSlice {
   selectedDate: string; // 'YYYY-MM-DD'
   setSelectedDate: (date: string) => void;
   loadEventsForDate: (date: string) => Promise<void>;
-  addEvent: (event: DiaryEvent) => void;
   removeEvent: (id: number) => void;
 }
 
@@ -48,10 +47,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const events = await getEventsByDate(date);
     set({ events });
   },
-  addEvent: (event) =>
-    set((s) => ({
-      events: [...s.events, event].sort((a, b) => a.timestamp - b.timestamp),
-    })),
   removeEvent: (id) =>
     set((s) => ({ events: s.events.filter((e) => e.id !== id) })),
 

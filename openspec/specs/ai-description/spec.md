@@ -1,5 +1,8 @@
-## MODIFIED Requirements
+# ai-description Specification
 
+## Purpose
+TBD - created by archiving change ux-polish. Update Purpose after archive.
+## Requirements
 ### Requirement: AI-assisted notes pre-fill
 When a photo is attached and an OpenRouter API key is configured, the system SHALL automatically request a text description of the image and pre-fill the notes field. The prompt SHALL focus strictly on identifying food and drink items, excluding descriptions of plates, packaging, background, or non-food objects. The system SHALL use the model determined by the user's model tier setting and append a language instruction based on the user's language setting.
 
@@ -26,3 +29,4 @@ When a photo is attached and an OpenRouter API key is configured, the system SHA
 #### Scenario: Language instruction appended
 - **WHEN** an AI description is requested and the user's language setting is not English
 - **THEN** the prompt SHALL include an instruction to respond in the selected language
+

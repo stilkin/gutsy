@@ -30,10 +30,14 @@ import { useAppStore } from '@/store';
 import { colors, switchColors } from '@/colors';
 import { entryFormStyles } from '@/components/entryFormStyles';
 import { EntryFormHeader } from '@/components/EntryFormHeader';
+import { DatePickerField } from '@/components/DatePickerField';
 import { TimePickerField } from '@/components/TimePickerField';
 
 export default function FoodEntryScreen() {
-  const [timestamp, setTimestamp] = useState(new Date());
+  const selectedDate = useAppStore((s) => s.selectedDate);
+  const now = new Date();
+  const [y, m, d] = selectedDate.split('-').map(Number);
+  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
   const [notes, setNotes] = useState('');
   const [breaksFast, setBreaksFast] = useState(true);
 
@@ -51,9 +55,7 @@ export default function FoodEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const editId = id ? Number(id) : null;
 
-  const addEvent = useAppStore((s) => s.addEvent);
   const loadEventsForDate = useAppStore((s) => s.loadEventsForDate);
-  const selectedDate = useAppStore((s) => s.selectedDate);
   const settings = useAppStore((s) => s.settings);
   const [hasApiKey, setHasApiKey] = useState(false);
 
@@ -179,17 +181,7 @@ export default function FoodEntryScreen() {
         }
       }
 
-      addEvent({
-        id,
-        type: 'food' as const,
-        timestamp: timestamp.getTime(),
-        notes: notes.trim() || null,
-        severity: null,
-        bristol_type: null,
-        name: null,
-        breaks_fast: breaksFast ? 1 : 0,
-        created_at: Date.now(),
-      });
+      await loadEventsForDate(selectedDate);
       router.back();
     }
   }
@@ -201,6 +193,7 @@ export default function FoodEntryScreen() {
   return (
     <SafeAreaView style={entryFormStyles.container}>
       <EntryFormHeader title="Food" onSave={handleSave} saveDisabled={loading || aiLoading} />
+      <DatePickerField timestamp={timestamp} onChangeDate={setTimestamp} />
       <TimePickerField timestamp={timestamp} onChangeTimestamp={setTimestamp} />
 
       {/* Photo field */}
