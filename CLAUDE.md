@@ -24,16 +24,16 @@ There is no test framework — lint + typecheck are the verification bar. The pr
 
 ## Tech Stack
 
-| Concern | Library |
-|---|---|
-| Framework | Expo (React Native) + Expo Router |
-| Persistent data | expo-sqlite |
-| Image files | expo-file-system (paths stored in SQLite) |
+| Concern                     | Library                                    |
+| --------------------------- | ------------------------------------------ |
+| Framework                   | Expo (React Native) + Expo Router          |
+| Persistent data             | expo-sqlite                                |
+| Image files                 | expo-file-system (paths stored in SQLite)  |
 | Photo capture/pick + resize | expo-image-picker + expo-image-manipulator |
-| PDF export | expo-print + expo-sharing |
-| App state | Zustand |
-| Date formatting | dayjs |
-| AI photo analysis | OpenRouter API (user-provided key, opt-in) |
+| PDF export                  | expo-print + expo-sharing                  |
+| App state                   | Zustand                                    |
+| Date formatting             | dayjs                                      |
+| AI photo analysis           | OpenRouter API (user-provided key, opt-in) |
 
 ## Architecture
 
@@ -56,12 +56,12 @@ There is no test framework — lint + typecheck are the verification bar. The pr
 
 This project uses **OpenSpec** (spec-driven schema). All feature work flows through `/opsx:*` commands:
 
-| Command | Purpose |
-|---|---|
-| `/opsx:explore [topic]` | Think through ideas before committing to a direction |
+| Command                       | Purpose                                                  |
+| ----------------------------- | -------------------------------------------------------- |
+| `/opsx:explore [topic]`       | Think through ideas before committing to a direction     |
 | `/opsx:propose [change-name]` | Create proposal, design, and task artifacts for a change |
-| `/opsx:apply [change-name]` | Implement tasks from a change |
-| `/opsx:archive [change-name]` | Archive a completed change |
+| `/opsx:apply [change-name]`   | Implement tasks from a change                            |
+| `/opsx:archive [change-name]` | Archive a completed change                               |
 
 ### Completed changes (in order)
 

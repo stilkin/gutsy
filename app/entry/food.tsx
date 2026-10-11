@@ -37,7 +37,9 @@ export default function FoodEntryScreen() {
   const selectedDate = useAppStore((s) => s.selectedDate);
   const now = new Date();
   const [y, m, d] = selectedDate.split('-').map(Number);
-  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
+  const [timestamp, setTimestamp] = useState(
+    new Date(y, m - 1, d, now.getHours(), now.getMinutes()),
+  );
   const [notes, setNotes] = useState('');
   const [breaksFast, setBreaksFast] = useState(true);
 
@@ -67,7 +69,11 @@ export default function FoodEntryScreen() {
     if (!editId) return;
     setLoading(true);
     Promise.all([getEventById(editId), getImageForEvent(editId)]).then(([event, imagePath]) => {
-      if (!event) { setLoading(false); router.back(); return; }
+      if (!event) {
+        setLoading(false);
+        router.back();
+        return;
+      }
       setTimestamp(new Date(event.timestamp));
       setNotes(event.notes ?? '');
       setBreaksFast(event.breaks_fast !== 0);
@@ -187,7 +193,8 @@ export default function FoodEntryScreen() {
   }
 
   // Determine what to show in the photo area
-  const showExistingImage = existingImagePath !== null && !existingImageRemoved && photoUri === null;
+  const showExistingImage =
+    existingImagePath !== null && !existingImageRemoved && photoUri === null;
   const showNewPhoto = photoUri !== null;
 
   return (
@@ -228,14 +235,14 @@ export default function FoodEntryScreen() {
               <TouchableOpacity
                 style={styles.removeBtn}
                 onPress={() => {
-                  Alert.alert(
-                    'Remove photo?',
-                    'This will permanently delete the stored photo.',
-                    [
-                      { text: 'Cancel', style: 'cancel' },
-                      { text: 'Remove', style: 'destructive', onPress: () => setExistingImageRemoved(true) },
-                    ]
-                  );
+                  Alert.alert('Remove photo?', 'This will permanently delete the stored photo.', [
+                    { text: 'Cancel', style: 'cancel' },
+                    {
+                      text: 'Remove',
+                      style: 'destructive',
+                      onPress: () => setExistingImageRemoved(true),
+                    },
+                  ]);
                 }}
               >
                 <Text style={styles.removeBtnText}>✕</Text>

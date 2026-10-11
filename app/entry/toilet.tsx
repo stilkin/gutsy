@@ -14,7 +14,9 @@ export default function ToiletEntryScreen() {
   const selectedDate = useAppStore((s) => s.selectedDate);
   const now = new Date();
   const [y, m, d] = selectedDate.split('-').map(Number);
-  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
+  const [timestamp, setTimestamp] = useState(
+    new Date(y, m - 1, d, now.getHours(), now.getMinutes()),
+  );
   const [notes, setNotes] = useState('');
   const [bristolType, setBristolType] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -89,7 +91,11 @@ export default function ToiletEntryScreen() {
               return (
                 <TouchableOpacity
                   key={n}
-                  style={[styles.circle, { borderColor: color }, selected && { backgroundColor: color }]}
+                  style={[
+                    styles.circle,
+                    { borderColor: color },
+                    selected && { backgroundColor: color },
+                  ]}
                   onPress={() => setBristolType(selected ? null : n)}
                 >
                   <Text style={{ fontSize: 16, color: selected ? colors.white : color }}>{n}</Text>
@@ -120,6 +126,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  labelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4, width: 44 * 7 + 10 * 6 },
+  labelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+    width: 44 * 7 + 10 * 6,
+  },
   endLabel: { fontSize: 11, color: colors.secondaryText },
 });

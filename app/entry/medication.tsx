@@ -18,7 +18,9 @@ export default function MedicationEntryScreen() {
   const selectedDate = useAppStore((s) => s.selectedDate);
   const now = new Date();
   const [y, m, d] = selectedDate.split('-').map(Number);
-  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
+  const [timestamp, setTimestamp] = useState(
+    new Date(y, m - 1, d, now.getHours(), now.getMinutes()),
+  );
   const [name, setName] = useState('');
   const [notes, setNotes] = useState('');
   const [nameError, setNameError] = useState(false);
@@ -40,7 +42,11 @@ export default function MedicationEntryScreen() {
     if (!editId) return;
     setLoading(true);
     getEventById(editId).then((event) => {
-      if (!event) { setLoading(false); router.back(); return; }
+      if (!event) {
+        setLoading(false);
+        router.back();
+        return;
+      }
       setTimestamp(new Date(event.timestamp));
       setName(event.name ?? '');
       setNotes(event.notes ?? '');

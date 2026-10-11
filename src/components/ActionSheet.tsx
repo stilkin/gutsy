@@ -23,19 +23,18 @@ const BASE_OPTIONS = [
   { label: 'Medication', key: 'medication' as const, icon: 'medical-outline' as const },
 ];
 
-const TOILET_OPTION = { label: 'Toilet break', key: 'toilet' as const, icon: 'water-outline' as const };
+const TOILET_OPTION = {
+  label: 'Toilet break',
+  key: 'toilet' as const,
+  icon: 'water-outline' as const,
+};
 
 export function ActionSheet({ visible, onClose, onSelect }: ActionSheetProps) {
   const toiletEnabled = useAppStore((s) => s.settings.toiletTrackingEnabled);
   const options = toiletEnabled ? [...BASE_OPTIONS, TOILET_OPTION] : BASE_OPTIONS;
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.backdrop} />
       </TouchableWithoutFeedback>

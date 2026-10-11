@@ -94,101 +94,111 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.topAccent}>
       <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>Settings</Text>
+        <ScrollView>
+          <Text style={styles.title}>Settings</Text>
 
-        <Text style={styles.sectionHeader}>Export</Text>
+          <Text style={styles.sectionHeader}>Export</Text>
 
-        <TouchableOpacity style={styles.row} onPress={() => router.push('/export')}>
-          <Text style={styles.rowLabel}>Export diary</Text>
-          <Text style={styles.chevron}>›</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.row} onPress={() => router.push('/export')}>
+            <Text style={styles.rowLabel}>Export diary</Text>
+            <Text style={styles.chevron}>›</Text>
+          </TouchableOpacity>
 
-        <Text style={styles.sectionHeader}>Fasting Window</Text>
+          <Text style={styles.sectionHeader}>Fasting Window</Text>
 
-        <Stepper
-          label="Window duration"
-          value={settings.windowHours}
-          unit="h"
-          min={1}
-          max={24}
-          onChange={(v) => updateSetting('windowHours', v)}
-        />
-        <Text style={styles.sectionHeader}>Logging</Text>
-
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Toilet tracking</Text>
-          <Switch
-            value={settings.toiletTrackingEnabled}
-            onValueChange={(v) => updateSetting('toiletTrackingEnabled', v)}
-            trackColor={switchColors.trackColor}
-            thumbColor={switchColors.thumbColor}
+          <Stepper
+            label="Window duration"
+            value={settings.windowHours}
+            unit="h"
+            min={1}
+            max={24}
+            onChange={(v) => updateSetting('windowHours', v)}
           />
-        </View>
+          <Text style={styles.sectionHeader}>Logging</Text>
 
-        {settings.toiletTrackingEnabled && (
           <View style={styles.row}>
-            <Text style={styles.rowLabel}>Bristol scale</Text>
+            <Text style={styles.rowLabel}>Toilet tracking</Text>
             <Switch
-              value={settings.bristolScaleEnabled}
-              onValueChange={(v) => updateSetting('bristolScaleEnabled', v)}
+              value={settings.toiletTrackingEnabled}
+              onValueChange={(v) => updateSetting('toiletTrackingEnabled', v)}
               trackColor={switchColors.trackColor}
               thumbColor={switchColors.thumbColor}
             />
           </View>
-        )}
 
-        <Text style={styles.sectionHeader}>AI Assistant</Text>
+          {settings.toiletTrackingEnabled && (
+            <View style={styles.row}>
+              <Text style={styles.rowLabel}>Bristol scale</Text>
+              <Switch
+                value={settings.bristolScaleEnabled}
+                onValueChange={(v) => updateSetting('bristolScaleEnabled', v)}
+                trackColor={switchColors.trackColor}
+                thumbColor={switchColors.thumbColor}
+              />
+            </View>
+          )}
 
-        <View style={styles.apiKeyField}>
-          <Text style={styles.rowLabel}>OpenRouter API Key</Text>
-          <TextInput
-            style={styles.apiKeyInput}
-            value={apiKey}
-            onChangeText={(v) => {
-              setApiKey(v);
-              setApiKeySaved(false);
-            }}
-            secureTextEntry
-            placeholder="sk-or-…"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <TouchableOpacity
-            style={[styles.apiKeySaveBtn, apiKeySaved && styles.apiKeySaveBtnSaved]}
-            onPress={handleApiKeySave}
-            disabled={apiKeySaved}
-          >
-            <Text style={styles.apiKeySaveBtnText}>{apiKeySaved ? 'Saved' : 'Save'}</Text>
-          </TouchableOpacity>
-        </View>
+          <Text style={styles.sectionHeader}>AI Assistant</Text>
 
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Model</Text>
-          <View style={styles.segmented}>
-            {tierOptions.map(({ key, label }) => (
-              <TouchableOpacity
-                key={key}
-                style={[styles.segmentBtn, settings.modelTier === key && styles.segmentBtnActive]}
-                onPress={() => updateSetting('modelTier', key)}
-              >
-                <Text style={[styles.segmentText, settings.modelTier === key && styles.segmentTextActive]}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.apiKeyField}>
+            <Text style={styles.rowLabel}>OpenRouter API Key</Text>
+            <TextInput
+              style={styles.apiKeyInput}
+              value={apiKey}
+              onChangeText={(v) => {
+                setApiKey(v);
+                setApiKeySaved(false);
+              }}
+              secureTextEntry
+              placeholder="sk-or-…"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+            <TouchableOpacity
+              style={[styles.apiKeySaveBtn, apiKeySaved && styles.apiKeySaveBtnSaved]}
+              onPress={handleApiKeySave}
+              disabled={apiKeySaved}
+            >
+              <Text style={styles.apiKeySaveBtnText}>{apiKeySaved ? 'Saved' : 'Save'}</Text>
+            </TouchableOpacity>
           </View>
-        </View>
 
-        <TouchableOpacity style={styles.row} onPress={() => setShowLanguagePicker(true)}>
-          <Text style={styles.rowLabel}>Description language</Text>
-          <Text style={styles.rowValue}>{LANGUAGE_NAMES[settings.language]} ›</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <View style={styles.row}>
+            <Text style={styles.rowLabel}>Model</Text>
+            <View style={styles.segmented}>
+              {tierOptions.map(({ key, label }) => (
+                <TouchableOpacity
+                  key={key}
+                  style={[styles.segmentBtn, settings.modelTier === key && styles.segmentBtnActive]}
+                  onPress={() => updateSetting('modelTier', key)}
+                >
+                  <Text
+                    style={[
+                      styles.segmentText,
+                      settings.modelTier === key && styles.segmentTextActive,
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <TouchableOpacity style={styles.row} onPress={() => setShowLanguagePicker(true)}>
+            <Text style={styles.rowLabel}>Description language</Text>
+            <Text style={styles.rowValue}>{LANGUAGE_NAMES[settings.language]} ›</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
 
       {/* Language picker modal */}
-      <Modal visible={showLanguagePicker} transparent animationType="slide" onRequestClose={() => setShowLanguagePicker(false)}>
+      <Modal
+        visible={showLanguagePicker}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowLanguagePicker(false)}
+      >
         <TouchableWithoutFeedback onPress={() => setShowLanguagePicker(false)}>
           <View style={styles.backdrop} />
         </TouchableWithoutFeedback>
@@ -204,7 +214,12 @@ export default function SettingsScreen() {
                   setShowLanguagePicker(false);
                 }}
               >
-                <Text style={[styles.sheetOptionText, settings.language === code && styles.sheetOptionActive]}>
+                <Text
+                  style={[
+                    styles.sheetOptionText,
+                    settings.language === code && styles.sheetOptionActive,
+                  ]}
+                >
                   {name}
                 </Text>
               </TouchableOpacity>
@@ -295,14 +310,31 @@ const styles = StyleSheet.create({
   apiKeySaveBtnText: { color: colors.white, fontSize: 15, fontWeight: '600' },
   chevron: { fontSize: 22, color: '#c7c7cc' },
   rowValue: { fontSize: 15, color: colors.secondaryText },
-  segmented: { flexDirection: 'row', borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: colors.primary },
+  segmented: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
   segmentBtn: { paddingVertical: 6, paddingHorizontal: 12 },
   segmentBtnActive: { backgroundColor: colors.primary },
   segmentText: { fontSize: 14, color: colors.primary },
   segmentTextActive: { color: colors.white },
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
-  sheet: { backgroundColor: colors.background, borderTopLeftRadius: 16, borderTopRightRadius: 16, paddingBottom: 32, maxHeight: '50%' },
-  sheetOption: { paddingVertical: 14, paddingHorizontal: 24, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.divider },
+  sheet: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingBottom: 32,
+    maxHeight: '50%',
+  },
+  sheetOption: {
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.divider,
+  },
   sheetOptionText: { fontSize: 17 },
   sheetOptionActive: { color: colors.primary, fontWeight: '600' },
 });

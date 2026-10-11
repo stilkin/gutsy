@@ -5,12 +5,14 @@ All diary data is in SQLite; images are on the local filesystem. The export feat
 ## Goals / Non-Goals
 
 **Goals:**
+
 - User selects a start and end date, taps Export, receives a shareable PDF
 - PDF is readable by a non-technical recipient (dietician, GP) without any special software
 - Images are included, scaled down to keep the file size manageable
 - Events are grouped by day, shown in chronological order
 
 **Non-Goals:**
+
 - CSV export (may be added post-MVP if users request it)
 - Scheduled or automatic export
 - Export directly to a specific app (just the system share sheet)

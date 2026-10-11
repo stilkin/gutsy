@@ -3,12 +3,12 @@ export type EventType = 'food' | 'ache' | 'toilet' | 'medication';
 export interface DiaryEvent {
   id: number;
   type: EventType;
-  timestamp: number;         // Unix ms (user-facing event time)
+  timestamp: number; // Unix ms (user-facing event time)
   notes: string | null;
-  severity: number | null;       // 1–5, ache only
-  bristol_type: number | null;   // 1–7, toilet only
-  name: string | null;           // medication name, medication only
-  breaks_fast: number;           // 1 = breaks fast (default), 0 = fasting-safe; food only
+  severity: number | null; // 1–5, ache only
+  bristol_type: number | null; // 1–7, toilet only
+  name: string | null; // medication name, medication only
+  breaks_fast: number; // 1 = breaks fast (default), 0 = fasting-safe; food only
   created_at: number;
 }
 
@@ -20,15 +20,22 @@ export type Language = 'en' | 'es' | 'pt' | 'fr' | 'de' | 'it' | 'nl' | 'pl' | '
 export type ModelTier = 'free' | 'normal' | 'premium';
 
 export const LANGUAGE_NAMES: Record<Language, string> = {
-  en: '🇬🇧 English', es: '🇪🇸 Español', pt: '🇵🇹 Português', fr: '🇫🇷 Français',
-  de: '🇩🇪 Deutsch', it: '🇮🇹 Italiano', nl: '🇳🇱 Nederlands', pl: '🇵🇱 Polski',
-  tr: '🇹🇷 Türkçe', id: '🇮🇩 Bahasa Indonesia',
+  en: '🇬🇧 English',
+  es: '🇪🇸 Español',
+  pt: '🇵🇹 Português',
+  fr: '🇫🇷 Français',
+  de: '🇩🇪 Deutsch',
+  it: '🇮🇹 Italiano',
+  nl: '🇳🇱 Nederlands',
+  pl: '🇵🇱 Polski',
+  tr: '🇹🇷 Türkçe',
+  id: '🇮🇩 Bahasa Indonesia',
 };
 
 export interface Settings {
-  windowHours: number;              // default 8
-  toiletTrackingEnabled: boolean;   // default true
-  bristolScaleEnabled: boolean;     // default false
-  language: Language;               // default 'en'
-  modelTier: ModelTier;             // default 'normal'
+  windowHours: number; // default 8
+  toiletTrackingEnabled: boolean; // default true
+  bristolScaleEnabled: boolean; // default false
+  language: Language; // default 'en'
+  modelTier: ModelTier; // default 'normal'
 }

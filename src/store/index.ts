@@ -47,8 +47,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     const events = await getEventsByDate(date);
     set({ events });
   },
-  removeEvent: (id) =>
-    set((s) => ({ events: s.events.filter((e) => e.id !== id) })),
+  removeEvent: (id) => set((s) => ({ events: s.events.filter((e) => e.id !== id) })),
 
   // Settings
   settings: DEFAULT_SETTINGS,

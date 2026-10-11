@@ -34,9 +34,9 @@ export default function RootLayout() {
     <>
       <StatusBar style="light" backgroundColor={colors.primary} />
       <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="export" options={{ presentation: 'modal' }} />
-    </Stack>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="export" options={{ presentation: 'modal' }} />
+      </Stack>
     </>
   );
 }

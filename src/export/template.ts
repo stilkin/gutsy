@@ -17,10 +17,9 @@ export function buildHtml(
   images: Record<number, string>,
   startDate: Date,
   endDate: Date,
-  windowHours?: number
+  windowHours?: number,
 ): string {
-  const headerRange =
-    `${dayjs(startDate).format('D MMM YYYY')} – ${dayjs(endDate).format('D MMM YYYY')}`;
+  const headerRange = `${dayjs(startDate).format('D MMM YYYY')} – ${dayjs(endDate).format('D MMM YYYY')}`;
   const exportedAt = dayjs().format('D MMM YYYY, HH:mm');
 
   // Group events by calendar day

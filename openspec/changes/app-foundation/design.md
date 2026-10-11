@@ -5,12 +5,14 @@ There is no existing codebase. This design establishes every structural decision
 ## Goals / Non-Goals
 
 **Goals:**
+
 - A working Expo app that launches, navigates, and opens a database
 - A SQLite schema that can accommodate all event types needed by later changes
 - A navigation shell (tab bar + FAB) that future screens slot into without restructuring
 - Minimal, well-typed Zustand store skeleton
 
 **Non-Goals:**
+
 - Any functional UI beyond navigation placeholders
 - Settings screen logic, fasting window, AI, export — all deferred to later changes
 - Anything that requires user input at this stage

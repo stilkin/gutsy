@@ -5,10 +5,12 @@ The PDF export is generated from an HTML template (`src/export/template.ts`) ren
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Reduce vertical space per entry so a typical day fits on fewer pages
 - Keep the export readable and useful for a dietician reviewing the diary
 
 **Non-Goals:**
+
 - Changing the export flow, date picker, or share mechanism
 - Re-encoding or resizing actual image files — CSS-only cropping is sufficient since `expo-print` renders HTML
 - Changing the app title or header layout

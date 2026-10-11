@@ -5,6 +5,7 @@ The navigation shell from `app-foundation` is in place. This change fills it wit
 ## Goals / Non-Goals
 
 **Goals:**
+
 - All three entry types working end-to-end (form → SQLite → timeline)
 - Timeline shows the selected day's events in chronological order with the fasting window visualised
 - Fasting window notification scheduled automatically when the first food entry is logged
@@ -12,6 +13,7 @@ The navigation shell from `app-foundation` is in place. This change fills it wit
 - Date navigation (prev/next + picker) on the timeline
 
 **Non-Goals:**
+
 - Photo capture — deferred to `ai-photo-assist`
 - Export — deferred to `export`
 - In-app correlation or analysis — post-MVP

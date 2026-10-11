@@ -7,12 +7,14 @@ The screens share a consistent structure (`EntryFormHeader`, `TimePickerField`, 
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Tap any timeline row → open that entry's form pre-populated
 - All four forms support create and edit mode via an optional `?id=` route param
 - `updateEvent` persists changes to SQLite; timeline re-fetches on return
 - Food edit form shows existing stored image; user can remove (with confirmation) or replace it
 
 **Non-Goals:**
+
 - Swipe-to-delete (separate patch)
 - Edit history or audit trail
 - Changing an entry's type (food → ache etc.)
@@ -36,11 +38,11 @@ Edit mode calls `await loadEventsForDate(selectedDate)` then `router.back()` ins
 
 Food entry edit tracks three pieces of state alongside the existing `photoUri` / `showPhotoSheet` state:
 
-| State var | Meaning |
-|---|---|
-| `existingImagePath` | Path of the already-stored image loaded from DB (`null` if none) |
-| `existingImageRemoved` | Whether the user has chosen to remove that stored image |
-| `newPhotoUri` | A freshly-picked (unsaved) replacement photo |
+| State var              | Meaning                                                          |
+| ---------------------- | ---------------------------------------------------------------- |
+| `existingImagePath`    | Path of the already-stored image loaded from DB (`null` if none) |
+| `existingImageRemoved` | Whether the user has chosen to remove that stored image          |
+| `newPhotoUri`          | A freshly-picked (unsaved) replacement photo                     |
 
 On save: if `existingImageRemoved`, delete the DB row and file; if `newPhotoUri`, resize, write, and insert a new images row. The two actions are independent and can both happen in the same save (remove old, add new).
 

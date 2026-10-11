@@ -14,7 +14,9 @@ export default function AcheEntryScreen() {
   const selectedDate = useAppStore((s) => s.selectedDate);
   const now = new Date();
   const [y, m, d] = selectedDate.split('-').map(Number);
-  const [timestamp, setTimestamp] = useState(new Date(y, m - 1, d, now.getHours(), now.getMinutes()));
+  const [timestamp, setTimestamp] = useState(
+    new Date(y, m - 1, d, now.getHours(), now.getMinutes()),
+  );
   const [notes, setNotes] = useState('');
   const [severity, setSeverity] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -87,7 +89,11 @@ export default function AcheEntryScreen() {
             return (
               <TouchableOpacity
                 key={n}
-                style={[styles.circle, { borderColor: color }, selected && { backgroundColor: color }]}
+                style={[
+                  styles.circle,
+                  { borderColor: color },
+                  selected && { backgroundColor: color },
+                ]}
                 onPress={() => setSeverity(selected ? null : n)}
               >
                 <Text style={{ fontSize: 16, color: selected ? colors.white : color }}>{n}</Text>
@@ -116,6 +122,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  labelRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4, width: 44 * 5 + 10 * 4 },
+  labelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+    width: 44 * 5 + 10 * 4,
+  },
   endLabel: { fontSize: 11, color: colors.secondaryText },
 });

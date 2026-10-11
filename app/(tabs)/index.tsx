@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -96,14 +89,10 @@ interface EventRowProps {
 
 function EventRow({ event, onDelete, onPress }: EventRowProps) {
   function handleLongPress() {
-    Alert.alert(
-      'Delete entry?',
-      `${dayjs(event.timestamp).format('HH:mm')} · ${event.type}`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: onDelete },
-      ]
-    );
+    Alert.alert('Delete entry?', `${dayjs(event.timestamp).format('HH:mm')} · ${event.type}`, [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: onDelete },
+    ]);
   }
 
   const primaryLabel = event.type === 'medication' && event.name ? event.name : null;
@@ -119,16 +108,16 @@ function EventRow({ event, onDelete, onPress }: EventRowProps) {
       <View style={styles.rowContent}>
         <Text style={styles.rowTime}>{dayjs(event.timestamp).format('HH:mm')}</Text>
         {primaryLabel ? (
-          <Text style={styles.rowPrimaryLabel} numberOfLines={1}>{primaryLabel}</Text>
+          <Text style={styles.rowPrimaryLabel} numberOfLines={1}>
+            {primaryLabel}
+          </Text>
         ) : null}
         {event.notes ? (
           <Text style={styles.rowNotes} numberOfLines={1}>
             {event.notes}
           </Text>
         ) : null}
-        {event.severity != null && (
-          <Text style={styles.rowMeta}>Severity {event.severity}/5</Text>
-        )}
+        {event.severity != null && <Text style={styles.rowMeta}>Severity {event.severity}/5</Text>}
         {event.bristol_type != null && (
           <Text style={styles.rowMeta}>Bristol type {event.bristol_type}</Text>
         )}
@@ -171,41 +160,37 @@ export default function TimelineScreen() {
   return (
     <SafeAreaView style={styles.topAccent}>
       <View style={styles.container}>
-      <DateHeader
-        selectedDate={selectedDate}
-        onPrev={() =>
-          setSelectedDate(dayjs(selectedDate).subtract(1, 'day').format('YYYY-MM-DD'))
-        }
-        onNext={() =>
-          setSelectedDate(dayjs(selectedDate).add(1, 'day').format('YYYY-MM-DD'))
-        }
-        onDateChange={setSelectedDate}
-      />
+        <DateHeader
+          selectedDate={selectedDate}
+          onPrev={() =>
+            setSelectedDate(dayjs(selectedDate).subtract(1, 'day').format('YYYY-MM-DD'))
+          }
+          onNext={() => setSelectedDate(dayjs(selectedDate).add(1, 'day').format('YYYY-MM-DD'))}
+          onDateChange={setSelectedDate}
+        />
 
-      <FastingWindowBanner events={events} windowHours={settings.windowHours} />
+        <FastingWindowBanner events={events} windowHours={settings.windowHours} />
 
-      <FlatList
-        data={events}
-        keyExtractor={(e) => String(e.id)}
-        renderItem={({ item }) => (
-          <EventRow
-            event={item}
-            onDelete={() => handleDelete(item)}
-            onPress={() => router.push(`/entry/${item.type}?id=${item.id}`)}
-          />
-        )}
-        ListEmptyComponent={
-          <Text style={styles.empty}>No entries for this day.</Text>
-        }
-        contentContainerStyle={styles.listContent}
-      />
+        <FlatList
+          data={events}
+          keyExtractor={(e) => String(e.id)}
+          renderItem={({ item }) => (
+            <EventRow
+              event={item}
+              onDelete={() => handleDelete(item)}
+              onPress={() => router.push(`/entry/${item.type}?id=${item.id}`)}
+            />
+          )}
+          ListEmptyComponent={<Text style={styles.empty}>No entries for this day.</Text>}
+          contentContainerStyle={styles.listContent}
+        />
 
-      <FAB onPress={openActionSheet} />
-      <ActionSheet
-        visible={isActionSheetOpen}
-        onClose={closeActionSheet}
-        onSelect={handleSelect}
-      />
+        <FAB onPress={openActionSheet} />
+        <ActionSheet
+          visible={isActionSheetOpen}
+          onClose={closeActionSheet}
+          onSelect={handleSelect}
+        />
       </View>
     </SafeAreaView>
   );

@@ -5,12 +5,14 @@ The food entry form exists and saves text notes. This change layers photo captur
 ## Goals / Non-Goals
 
 **Goals:**
+
 - User can attach a photo to a food entry (taken or picked from library)
 - Photo is resized before storage (save space) and before API submission (reduce cost/latency)
 - If an API key is set, the AI returns a description that pre-fills the notes field
 - Full graceful degradation: no key → no AI call, API error → notes field stays empty, user continues normally
 
 **Non-Goals:**
+
 - Ingredient extraction or calorie estimation — post-MVP
 - Attaching photos to ache or toilet entries
 - Multiple photos per entry (one is enough for MVP)

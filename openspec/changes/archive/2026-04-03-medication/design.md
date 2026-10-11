@@ -5,6 +5,7 @@ The app already stores all diary events in a single `events` SQLite table with t
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Log medication events (timestamp, name, optional notes) from the FAB
 - Autocomplete medication name from previous entries in SQLite
 - Normalise name to Title Case + trim on save
@@ -12,6 +13,7 @@ The app already stores all diary events in a single `events` SQLite table with t
 - Include medication entries in the PDF export
 
 **Non-Goals:**
+
 - Medication scheduling or reminders
 - Dosage or quantity tracking
 - Drug interaction warnings or medication library lookups

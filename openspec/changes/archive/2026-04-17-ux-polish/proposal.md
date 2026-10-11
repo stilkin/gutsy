@@ -15,11 +15,13 @@ Users have reported several small friction points: the AI photo description incl
 ## Capabilities
 
 ### New Capabilities
+
 - `llm-language`: Language preference setting and prompt injection for AI output language
 - `llm-model-tier`: Model tier setting (free/normal/premium) mapped to OpenRouter model IDs
 - `ai-retry`: Retry button for AI food description on the food entry screen
 
 ### Modified Capabilities
+
 - `ai-description`: Tighter prompt focusing only on food/drink; accepts language and model tier parameters
 - `settings`: Two new settings (language, model tier) added to settings screen and persistence
 - `export`: Narrower notes layout and side-by-side photo+notes in PDF template

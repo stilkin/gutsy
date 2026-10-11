@@ -22,9 +22,7 @@ import { loadSettings } from '@/settings';
 import { colors } from '@/colors';
 
 export default function ExportScreen() {
-  const [startDate, setStartDate] = useState(
-    dayjs().subtract(7, 'day').startOf('day').toDate()
-  );
+  const [startDate, setStartDate] = useState(dayjs().subtract(7, 'day').startOf('day').toDate());
   const [endDate, setEndDate] = useState(new Date());
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
@@ -63,56 +61,56 @@ export default function ExportScreen() {
       </View>
 
       <ScrollView>
-      <View style={styles.field}>
-        <Text style={styles.label}>Start date</Text>
-        <TouchableOpacity onPress={() => setShowStartPicker(true)}>
-          <Text style={styles.dateValue}>{dayjs(startDate).format('D MMM YYYY')}</Text>
-        </TouchableOpacity>
-        {(showStartPicker || Platform.OS === 'ios') && (
-          <DateTimePicker
-            value={startDate}
-            mode="date"
-            maximumDate={endDate}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(_, date) => {
-              setShowStartPicker(false);
-              if (date) setStartDate(date);
-            }}
-          />
-        )}
-      </View>
+        <View style={styles.field}>
+          <Text style={styles.label}>Start date</Text>
+          <TouchableOpacity onPress={() => setShowStartPicker(true)}>
+            <Text style={styles.dateValue}>{dayjs(startDate).format('D MMM YYYY')}</Text>
+          </TouchableOpacity>
+          {(showStartPicker || Platform.OS === 'ios') && (
+            <DateTimePicker
+              value={startDate}
+              mode="date"
+              maximumDate={endDate}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={(_, date) => {
+                setShowStartPicker(false);
+                if (date) setStartDate(date);
+              }}
+            />
+          )}
+        </View>
 
-      <View style={styles.field}>
-        <Text style={styles.label}>End date</Text>
-        <TouchableOpacity onPress={() => setShowEndPicker(true)}>
-          <Text style={styles.dateValue}>{dayjs(endDate).format('D MMM YYYY')}</Text>
-        </TouchableOpacity>
-        {(showEndPicker || Platform.OS === 'ios') && (
-          <DateTimePicker
-            value={endDate}
-            mode="date"
-            minimumDate={startDate}
-            maximumDate={new Date()}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={(_, date) => {
-              setShowEndPicker(false);
-              if (date) setEndDate(date);
-            }}
-          />
-        )}
-      </View>
+        <View style={styles.field}>
+          <Text style={styles.label}>End date</Text>
+          <TouchableOpacity onPress={() => setShowEndPicker(true)}>
+            <Text style={styles.dateValue}>{dayjs(endDate).format('D MMM YYYY')}</Text>
+          </TouchableOpacity>
+          {(showEndPicker || Platform.OS === 'ios') && (
+            <DateTimePicker
+              value={endDate}
+              mode="date"
+              minimumDate={startDate}
+              maximumDate={new Date()}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={(_, date) => {
+                setShowEndPicker(false);
+                if (date) setEndDate(date);
+              }}
+            />
+          )}
+        </View>
 
-      <TouchableOpacity
-        style={[styles.exportBtn, loading && styles.exportBtnDisabled]}
-        onPress={handleExport}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color={colors.white} />
-        ) : (
-          <Text style={styles.exportBtnText}>Export PDF</Text>
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.exportBtn, loading && styles.exportBtnDisabled]}
+          onPress={handleExport}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            <Text style={styles.exportBtnText}>Export PDF</Text>
+          )}
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

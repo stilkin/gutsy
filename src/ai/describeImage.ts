@@ -11,9 +11,16 @@ const TIER_MODELS: Record<ModelTier, string> = {
 };
 
 const PROMPT_LANGUAGES: Record<Language, string> = {
-  en: 'English', es: 'Spanish', pt: 'Portuguese', fr: 'French',
-  de: 'German', it: 'Italian', nl: 'Dutch', pl: 'Polish',
-  tr: 'Turkish', id: 'Indonesian',
+  en: 'English',
+  es: 'Spanish',
+  pt: 'Portuguese',
+  fr: 'French',
+  de: 'German',
+  it: 'Italian',
+  nl: 'Dutch',
+  pl: 'Polish',
+  tr: 'Turkish',
+  id: 'Indonesian',
 };
 
 /**

@@ -27,7 +27,7 @@ export async function loadSettings(): Promise<Settings> {
 
 export async function saveSetting<K extends keyof Settings>(
   key: K,
-  value: Settings[K]
+  value: Settings[K],
 ): Promise<void> {
   await AsyncStorage.setItem(KEY(key), String(value));
 }
