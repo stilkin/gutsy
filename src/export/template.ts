@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { getFastingWindow } from '@/fasting';
 import type { DiaryEventWithImage } from '@/types';
 
 const TYPE_EMOJI: Record<string, string> = {
@@ -41,11 +42,9 @@ export function buildHtml(
     for (const [dateKey, dayEvents] of byDay) {
       body += `<h2>${dayjs(dateKey).format('dddd, D MMMM YYYY')}</h2>`;
       if (windowHours != null) {
-        const breaking = dayEvents.filter((e) => e.type === 'food' && e.breaks_fast !== 0);
-        if (breaking.length > 0) {
-          const windowStart = Math.min(...breaking.map((e) => e.timestamp));
-          const windowEnd = windowStart + windowHours * 3_600_000;
-          body += `<div class="fasting-window">Window: ${dayjs(windowStart).format('HH:mm')} – ${dayjs(windowEnd).format('HH:mm')}</div>`;
+        const fastingWindow = getFastingWindow(dayEvents, windowHours);
+        if (fastingWindow) {
+          body += `<div class="fasting-window">Window: ${dayjs(fastingWindow.start).format('HH:mm')} – ${dayjs(fastingWindow.end).format('HH:mm')}</div>`;
         }
       }
       for (const e of dayEvents) {

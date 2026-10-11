@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import { deleteEventWithImages } from '@/db/queries';
+import { getFastingWindow } from '@/fasting';
 import { useAppStore } from '@/store';
 import { FAB } from '@/components/FAB';
 import { ActionSheet } from '@/components/ActionSheet';
@@ -61,14 +62,13 @@ interface FastingWindowBannerProps {
 }
 
 function FastingWindowBanner({ events, windowHours }: FastingWindowBannerProps) {
-  const fastBreakingEvents = events.filter((e) => e.type === 'food' && e.breaks_fast !== 0);
-  if (fastBreakingEvents.length === 0) return null;
-  const windowStart = Math.min(...fastBreakingEvents.map((e) => e.timestamp));
-  const windowEnd = windowStart + windowHours * 3_600_000;
+  const fastingWindow = getFastingWindow(events, windowHours);
+  if (!fastingWindow) return null;
   return (
     <View style={styles.banner}>
       <Text style={styles.bannerText}>
-        Window: {dayjs(windowStart).format('HH:mm')} – {dayjs(windowEnd).format('HH:mm')}
+        Window: {dayjs(fastingWindow.start).format('HH:mm')} –{' '}
+        {dayjs(fastingWindow.end).format('HH:mm')}
       </Text>
     </View>
   );

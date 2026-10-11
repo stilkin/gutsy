@@ -13,14 +13,16 @@ Gutsy — a mobile food diary for tracking meals, symptoms, and intermittent fas
 ## Commands
 
 ```sh
-npm start          # Expo dev server — scan QR code with Expo Go
-npm run android    # Android emulator
-npm run ios        # iOS simulator
-npm run lint       # ESLint over src/ and app/
-npm run typecheck  # tsc --noEmit
+npm start            # Expo dev server — scan QR code with Expo Go
+npm run android      # Android emulator
+npm run ios          # iOS simulator
+npm run lint         # ESLint over src/ and app/
+npm run typecheck    # tsc --noEmit
+npm run format       # Prettier write (format:check to verify without writing)
+npm test             # Jest via jest-expo, TZ pinned to UTC (test:watch / test:coverage)
 ```
 
-There is no test framework — lint + typecheck are the verification bar. The pre-commit hook (`.githooks/pre-commit`, installed via the `prepare` script) runs both, so a commit fails if either fails.
+Unit tests live next to their modules as co-located `*.test.ts` files. The verification bar is format + typecheck + lint + tests. The pre-commit hook (`.githooks/pre-commit`, installed via the `prepare` script) runs all four, and CI (`.github/workflows/ci.yml`) runs lint + typecheck + test on every push.
 
 ## Tech Stack
 

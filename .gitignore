@@ -45,9 +45,7 @@ yarn-error.*
 release/
 
 # project specific
-tsconfig.json
 .claude/
-.eslintrc.js
 .githooks/
 .gitignore
 .opencode/
