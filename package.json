@@ -9,6 +9,8 @@
     "web": "expo start --web",
     "lint": "eslint 'src/**/*.{ts,tsx}' 'app/**/*.{ts,tsx}'",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
@@ -41,6 +43,7 @@
     "babel-preset-expo": "~54.0.10",
     "eslint": "^8.57.1",
     "eslint-config-expo": "~10.0.0",
+    "prettier": "^3.9.10",
     "typescript": "~5.9.2"
   },
   "private": true
