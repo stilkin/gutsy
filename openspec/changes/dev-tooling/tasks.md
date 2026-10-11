@@ -28,7 +28,7 @@
 
 ## 6. Integration
 
-- [ ] 6.1 Full local pass — `npm run format:check && npm run lint && npm run typecheck && npm test` — then make a commit and confirm the hook runs all four checks. Verify: commit succeeds and the pushed branch shows a green CI run on GitHub.
+- [x] 6.1 Full local pass — `npm run format:check && npm run lint && npm run typecheck && npm test` — then make a commit and confirm the hook runs all four checks. Verify: commit succeeds and the pushed branch shows a green CI run on GitHub.
 
 ## Workflow follow-up
 
