@@ -51,3 +51,6 @@ release/
 .opencode/
 
 
+
+# test coverage output
+coverage/
